@@ -1,3 +1,4 @@
+
 """
 Main application window for Osdag GUI.
 Handles tab management, docking icons, and main window controls.

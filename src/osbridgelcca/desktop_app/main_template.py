@@ -1,3 +1,5 @@
+
+
 """
 <Author>: Prerna Praveen Vidyarthi
 <Intern>: FOSSEE Summer Fellowship 2025
@@ -358,11 +360,11 @@ class UiMainWindow(object):
         self.results_tab = QPushButton("Results")
         self.compare = QPushButton("Compare")
 
-        # Add buttons to layout
-        button_layout.addWidget(self.tutorial_tab)
+        # Add buttons to layout (Reordered: Project Details -> Results -> Compare -> Tutorials)
         button_layout.addWidget(self.project_details_tab)
         button_layout.addWidget(self.results_tab)
         button_layout.addWidget(self.compare)
+        button_layout.addWidget(self.tutorial_tab)
 
         button_layout.addStretch()
 
@@ -423,7 +425,8 @@ class UiMainWindow(object):
         self.compare.clicked.connect(show_comparison_widget)
 
         def show_project_details_widget(widget_name=None):
-            if widget_name == KEY_STRUCTURE_WORKS_DATA:
+            # Check for BOTH the old key and the new display name
+            if widget_name == KEY_STRUCTURE_WORKS_DATA or widget_name == "Construction work data":
                 # treat it as foundation
                 widget_name = KEY_FOUNDATION
             if widget_name and widget_name in self.widget_map:                
