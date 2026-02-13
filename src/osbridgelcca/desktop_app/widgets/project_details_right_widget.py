@@ -724,7 +724,7 @@ class ProjectDetailsWidget(QWidget):
         
         # JAWWAD: DEBUG INFO
         # This confirms emission. Ensure your MainWindow connects this signal to Foundation.set_project_id()!
-        print(f"JAWWAD DEBUG: Signal 'projectCreated' emitted with UUID: {uuid}")
+        print(f"Signal 'projectCreated' emitted with UUID: {uuid}")
 
     @Slot(str)
     def on_creation_error(self, msg):

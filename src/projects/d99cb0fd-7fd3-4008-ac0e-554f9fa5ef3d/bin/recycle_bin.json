@@ -1,0 +1,39 @@
+[
+    {
+        "deleted_at": "2026-02-13T22:01:51.618456",
+        "original_category": "construction_work_data",
+        "original_sub_category": "foundation",
+        "item_data": {
+            "id": "b16b5eea-6c63-4d61-8e28-dc05105ea379",
+            "values": {
+                "material_name": "Soft Rock (Above 6 m)",
+                "quantity": "1.0",
+                "unit": "cum",
+                "rate": "724.1",
+                "rate_source": "Maha PWD SOR",
+                "carbon_emission": "not_available",
+                "carbon_unit": "not_available",
+                "conversion_factor": "not_available",
+                "carbon_source": "not_available",
+                "grade": "Standard",
+                "type": "Soft Rock (Above 6 m)",
+                "is_recyclable": false,
+                "scrap_rate": 5,
+                "recyclability_percentage": 80
+            },
+            "meta": {
+                "created_on": "2026-02-13T22:00:58.527359",
+                "modified_on": "2026-02-13T22:00:58.527359",
+                "is_user_defined": true,
+                "is_from_db": false,
+                "source_version": "v1.0"
+            },
+            "state": {
+                "is_active": false,
+                "removed_by_user": true,
+                "included_in_carbon_emission": true,
+                "included_in_recyclability": false
+            }
+        }
+    }
+]

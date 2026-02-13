@@ -1,0 +1,25 @@
+{
+    "general_info": {
+        "project_id": "cf2440fa-179a-481f-9cb3-3fac75dd6315",
+        "project_name": "fkdjak",
+        "company_name": "fjlkdlsa",
+        "description": "dljjelo",
+        "valuer": "jfkjd",
+        "job_number": "892",
+        "client": "hjfjkda",
+        "country": "India",
+        "region": "India",
+        "sor": "Bihar",
+        "base_year": "2025",
+        "currency": "INR",
+        "created_on": "2026-02-13T23:25:47.348927",
+        "modified_on": "2026-02-13T23:25:47.348927",
+        "version": 1
+    },
+    "input_param": {},
+    "Financial": {},
+    "Maintenace_repair": {},
+    "Carbon_emission": {},
+    "Bridge_and_traffic": {},
+    "Demolition_and_recycling": {}
+}

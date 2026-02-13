@@ -12,13 +12,14 @@ class DatabaseManager:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
+        # Fixed: Removed the inline comment on 'status' to prevent SQL syntax errors
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS projects (
                 id TEXT PRIMARY KEY, 
                 name TEXT,
                 main_path TEXT,
                 temp_path TEXT,
-                status TEXT,        -- 'draft' or 'saved'
+                status TEXT,
                 hash_key TEXT,
                 user_name TEXT,
                 sys_info TEXT,

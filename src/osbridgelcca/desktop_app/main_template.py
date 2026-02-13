@@ -1,4 +1,3 @@
-
 """
 <Author>: Prerna Praveen Vidyarthi
 <Intern>: FOSSEE Summer Fellowship 2025
@@ -29,7 +28,9 @@ from osbridgelcca.desktop_app.widgets.demolition_and_recycling_data import Demol
 from osbridgelcca.desktop_app.widgets.project_details_left_widget import ProjectDetailsLeft
 from osbridgelcca.desktop_app.widgets.tab_widget import CustomTabWidget
 from osbridgelcca.desktop_app.widgets.utils.data import *
-from osbridgelcca.desktop_app.widgets.utils.database import DatabaseManager
+
+# --- JAWWAD FIX: Import the Core ProjectDataManager instead of the Utils DatabaseManager ---
+from osbridgelcca.desktop_app.core.data_manager import ProjectDataManager
 from osbridgelcca.desktop_app.resources.resources_rc import *
 
 import pandas as pd
@@ -218,6 +219,11 @@ def map_section_to_widget(widget, component_type, data_items):
 class UiMainWindow(object):
     # --- Ritik: Excel Functionality ---
     def open_excel_dialog(self):
+        # 1. CHECK FOR ACTIVE PROJECT (REQUIRED FOR AUTOSAVE)
+        if not self.current_project_id:
+            QMessageBox.warning(self.central_widget, "No Project", "Please create or open a project before uploading Excel data.")
+            return
+
         print("[UI] Upload Excel clicked")
         file_path, _ = QFileDialog.getOpenFileName(None, "Select Excel File", "", "Excel Files (*.xlsx *.xls)")
         if not file_path:
@@ -237,7 +243,19 @@ class UiMainWindow(object):
             show_error_message(errors, parent=self.windows)
             return
 
-        # JAWWAD : Save to JSON immediately after parsing
+        # -------------------------------------------------------------
+        # JAWWAD : 1. SAVE TO AUTOSAVE.JSON (Project Persistence)
+        # -------------------------------------------------------------
+        # This saves the data directly to the project structure (autosave.json)
+        try:
+            self.database_manager.bulk_import_excel_data(self.current_project_id, parsed_data)
+        except AttributeError:
+             print("❌ Error: DatabaseManager missing 'bulk_import_excel_data'. Data not saved to project file.")
+        
+        # -------------------------------------------------------------
+        # JAWWAD : 2. SAVE TO TEMP JSON (Preserved for Calculation & Logs)
+        # -------------------------------------------------------------
+        # Keeps existing functionality for temporary file generation and logs
         self.save_temp_data(parsed_data)
         
         # JAWWAD: Reset lock flag on new upload to allow re-calculation
@@ -248,6 +266,11 @@ class UiMainWindow(object):
             show_warning_message(warnings, parent=self.windows)
         
         print(f"\n[MAPPING] Starting mapping of {len(parsed_data)} section(s)...")
+        
+        # -------------------------------------------------------------
+        # JAWWAD : 3. DISTRIBUTE TO UI (Preserved for Logs & Widget Pop)
+        # -------------------------------------------------------------
+        # This function generates the specific terminal output you requested
         self.distribute_imported_data(parsed_data)
 
     # JAWWAD : New method to save parsed data to JSON file
@@ -417,7 +440,9 @@ class UiMainWindow(object):
         # JAWWAD: Call the cleanup method immediately on startup
         self.cleanup_temp_db()
 
-        self.database_manager = DatabaseManager()
+        # JAWWAD FIX: Initialize ProjectDataManager (Core) instead of DatabaseManager (Utils)
+        self.database_manager = ProjectDataManager()
+        
         self.tabs_active = False
         self.active_tab_widgets = {}
         
@@ -761,8 +786,6 @@ class UiMainWindow(object):
         self.left_panel_placeholder.layout().addWidget(self.current_left_widget)
         self.current_left_widget.closed.connect(self.remove_left_widget)
         self.current_left_widget.handle_button_selection(button_name=start_widget_name)
-
-        self.add_new_tab_widget(start_widget_name)
 
     def add_new_tab_widget(self, widget_name):
         """Helper to create or retrieve a widget tab."""
