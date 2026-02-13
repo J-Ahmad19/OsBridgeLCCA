@@ -1,6 +1,3 @@
-
-
-
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QCoreApplication, Qt, QSize, QPropertyAnimation, QEasingCurve, Signal
 from PySide6.QtWidgets import (QHBoxLayout, QPushButton, QTextEdit, QWidget, QLabel, QVBoxLayout, QScrollArea, QSpacerItem, QSizePolicy)
@@ -226,12 +223,16 @@ class ProjectDetailsLeft(QWidget):
 
         self.current_selected_button = None
         self.all_param_buttons = {}
+        #ritik
         button_data = {
             KEY_STRUCTURE_WORKS_DATA: [KEY_FOUNDATION, KEY_SUPERSTRUCTURE, KEY_SUBSTRUCTURE, KEY_AUXILIARY],
             KEY_FINANCIAL: [],
-            KEY_CARBON_EMISSION: [KEY_CARBON_EMISSION_COST],
+            KEY_CARBON_EMISSION: ["Material Data",
+                "Machinery Data",
+            KEY_CARBON_EMISSION_COST,KEY_TRANSPORTATION_DATA],
             KEY_BRIDGE_TRAFFIC: [],
             KEY_MAINTAINANCE_REPAIR: [],
+            KEY_RECYCLABLE: [],
             KEY_DEMOLITION_RECYCLE: []
         }
         for label, sublabels in button_data.items():
@@ -239,7 +240,7 @@ class ProjectDetailsLeft(QWidget):
             display_label = label
             if label == KEY_STRUCTURE_WORKS_DATA:
                 display_label = "Construction work data"
-
+            
             btn = QPushButton(display_label)
             btn.setProperty("class", "category_button")
             btn.setProperty("selected", False)
@@ -265,7 +266,14 @@ class ProjectDetailsLeft(QWidget):
                     sub_btn.setCursor(Qt.CursorShape.PointingHandCursor)
                     sub_btn.setLayoutDirection(Qt.LeftToRight)
                     sub_btn.setVisible(False)
-                    sub_btn.clicked.connect(lambda checked ,b=sub_btn, name=sublabel: self.show_structure_widget(name,b))
+                    if sublabel == "Material Data":
+                         sub_btn.clicked.connect(lambda checked, b=sub_btn: self.on_sub_button_clicked(KEY_CARBON_EMISSION, b))
+                    elif sublabel == "Machinery Data":
+                         # Fix: Map "Machinery Data" button to "Carbon Emission Machinery Data" widget key
+                         sub_btn.clicked.connect(lambda checked, b=sub_btn: self.on_sub_button_clicked("Carbon Emission Machinery Data", b))
+                    else:
+                         sub_btn.clicked.connect(lambda checked, b=sub_btn, name=sublabel: self.on_sub_button_clicked(name, b))
+                    
                     scroll_content_layout.addWidget(sub_btn)
                     sub_widgets.append(sub_btn)
                     self.all_param_buttons[sublabel] = sub_btn                
@@ -382,6 +390,15 @@ class ProjectDetailsLeft(QWidget):
     def show_structure_widget(self, name, btn):
         self.parent.show_project_detail_widgets(name)
         self.handle_button_selection(btn)
+
+    def on_sub_button_clicked(self, name, btn):
+        print(f"[DEBUG] Sub-button clicked: Requesting widget '{name}'")
+        try:
+            self.show_structure_widget(name, btn)
+        except Exception as e:
+            print(f"[ERROR] Failed to show widget '{name}': {e}")
+            import traceback
+            traceback.print_exc()
 
     def close_widget(self):
         self.closed.emit()

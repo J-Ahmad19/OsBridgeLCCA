@@ -23,10 +23,13 @@ from osbridgelcca.desktop_app.widgets.structure_works_data.auxiliary_works_widge
 from osbridgelcca.desktop_app.widgets.financial_data import FinancialData
 from osbridgelcca.desktop_app.widgets.carbon_emission_data.carbon_emission_data import CarbonEmissionData
 from osbridgelcca.desktop_app.widgets.carbon_emission_data.carbon_emission_cost_data import CarbonEmissionCostData
+from osbridgelcca.desktop_app.widgets.carbon_emission_data.carbon_machinery_widget import CarbonMachineryWidget
+from osbridgelcca.desktop_app.widgets.carbon_emission_data.Transportation_data import TransportationMainWidget
 from osbridgelcca.desktop_app.widgets.bridge_and_traffic_data import BridgeAndTrafficData
 from osbridgelcca.desktop_app.widgets.maintenance_repair_data import MaintenanceRepairData
 from osbridgelcca.desktop_app.widgets.demolition_and_recycling_data import DemolitionAndRecyclingData
 from osbridgelcca.desktop_app.widgets.project_details_left_widget import ProjectDetailsLeft
+from osbridgelcca.desktop_app.widgets.recyclable import RecyclableWidget
 from osbridgelcca.desktop_app.widgets.tab_widget import CustomTabWidget
 from osbridgelcca.desktop_app.widgets.utils.data import *
 from osbridgelcca.desktop_app.widgets.utils.database import DatabaseManager
@@ -44,7 +47,7 @@ JSON_DB_PATH = os.path.join(DB_FOLDER, "temporary_construction_data.json")
 
 # ================== RITIK : EXCEL PARSING LOGIC ==================
 
-ALLOWED_UNITS = {'cum', 'rmt', 'm2', 'mt'}
+ALLOWED_UNITS = {'cum', 'rmt', 'm2', 'mt', 'nos', 'kg'}
 FLEXIBLE_FIELD_CONFIG = ['carbon_emission', 'conversion_factor']
 ALLOWED_FLEXIBLE_VALUES = {'not_available'}
 ALLOWED_RECYCLE_VALUES = {'recycleable', 'recyclable', 'non-recyclable'}
@@ -52,6 +55,7 @@ ALLOWED_RECYCLE_VALUES = {'recycleable', 'recyclable', 'non-recyclable'}
 def clean_header(header_val):
     if not isinstance(header_val, str):
         return str(header_val)
+    # Converts 'CID#Item' -> 'item'
     return header_val.replace('CID#', '').lower().strip()
 
 def is_valid_number(val):
@@ -63,8 +67,30 @@ def is_valid_number(val):
     except (ValueError, TypeError):
         return False
 
-def get_row_identifier(sheet, type_name, row_idx):
-    return f"Sheet: '{sheet}', Component: '{type_name}', Row: {row_idx + 1}"
+def get_row_identifier(sheet, type_name, row_idx, item_code=None):
+    # Pandas index 0 = Excel Row 1
+    base_id = f"Sheet: '{sheet}', Component: '{type_name}', Row: {row_idx + 1}"
+    if item_code:
+        return f"{base_id} [Item: {item_code}]"
+    return base_id
+
+def normalize_unit_string(val):
+    """
+    RITIK: Helper to normalize known unit strings, especially handling typos like KgC02e (zero) vs kgCO2e.
+    """
+    if not isinstance(val, str):
+        return val
+    
+    val_clean = val.strip()
+    
+    # Specific replacements
+    # Case: "KgC02e/kg" (Capital K, C, Zero instead of O) -> "kgCO₂e/kg"
+    # Case: "KgCO2e/kg" (Capital K, C, Letter O) -> "kgCO₂e/kg"
+    # Case: "kgCO2e/kg" (lowercase k, Letter O) -> "kgCO₂e/kg"
+    if val_clean in ["KgC02e/kg", "KgCO2e/kg", "kgCO2e/kg", "kgC02e/kg"]:
+        return "kgCO\u2082e/kg"
+        
+    return val
 
 def parse_and_validate_excel(file_path):
     try:
@@ -77,47 +103,79 @@ def parse_and_validate_excel(file_path):
     global_warnings = []
 
     for sheet_name, df in all_sheets.items():
+        
         current_section = None
-        current_keys = None
-        section_seen_data = {}
+        current_keys = None 
+        section_seen_data = {} 
 
         for idx, row in df.iterrows():
             if row.isnull().all():
                 continue
 
-            first_val = str(row[0]).strip() if pd.notna(row[0]) else ""
+            # Safely get first two string values for detection
+            def get_val(r, i):
+                if i < len(r) and pd.notna(r[i]):
+                    return str(r[i]).strip()
+                return ""
 
-            if first_val.startswith('CID#'):
+            first_val = get_val(row, 0)
+            second_val = get_val(row, 1)
+
+            # --- 1. Identify Header (CID#) ---
+            # We check col 0 OR col 1 to support the 'Excavation' sheet structure
+            is_header_row = first_val.startswith('CID#') or second_val.startswith('CID#')
+            
+            if is_header_row:
                 current_keys = []
                 for i, val in enumerate(row):
-                    if pd.notna(val) and str(val).strip():
-                        current_keys.append((i, clean_header(str(val))))
+                    v_str = get_val(row, i)
+                    if v_str != "":
+                        current_keys.append((i, clean_header(v_str)))
+                
+                # SPECIAL HANDLING: Excavation Sheet
+                # If header starts at index 1 (Name) but index 0 is empty,
+                # we explicitly map index 0 to 'item' so we capture the item code.
+                has_idx_0 = any(k[0] == 0 for k in current_keys)
+                has_name_at_1 = any(k[0] == 1 and k[1] == 'name' for k in current_keys)
+                
+                if not has_idx_0 and has_name_at_1:
+                    current_keys.insert(0, (0, 'item'))
+                    
+                continue
+            
+            # --- Skip Visual Headers ---
+            if first_val in ['Material', 'SOR Item No.']:
                 continue
 
-            if first_val == 'Material':
-                continue
-
+            # --- 2. Identify Section ---
             col2 = row[2] if len(row) > 2 else np.nan
             col3 = row[3] if len(row) > 3 else np.nan
-
+            
             if pd.notna(row[0]) and pd.isna(col2) and pd.isna(col3):
                 if current_section:
                     parsed_sections.append(current_section)
-
+                
                 current_section = {
                     "sheetName": sheet_name,
-                    "type": first_val,
+                    "type": first_val, 
                     "data": []
                 }
-                section_seen_data = {}
+                section_seen_data = {} 
                 continue
 
+            # --- 3. Process Data Row ---
             if current_section and current_keys:
                 raw_row_data = {}
                 for col_idx, key in current_keys:
                     val = row[col_idx] if col_idx < len(row) else None
-                    raw_row_data[key] = None if pd.isna(val) or str(val).strip() == "" else val
+                    if pd.isna(val) or str(val).strip() == "":
+                        raw_row_data[key] = None
+                    else:
+                        if key == 'carbon_emission_units':
+                            val = normalize_unit_string(val)
+                        raw_row_data[key] = val
 
+                # === VALIDATION ===
                 qty_val = raw_row_data.get('quantity')
                 if qty_val is None:
                     continue
@@ -125,12 +183,17 @@ def parse_and_validate_excel(file_path):
                 final_row_data = raw_row_data.copy()
                 row_has_critical_error = False
                 is_duplicate = False
-                row_context = get_row_identifier(sheet_name, current_section['type'], idx)
+                
+                # Context for logging
+                item_code = final_row_data.get('item') 
+                row_context = get_row_identifier(sheet_name, current_section['type'], idx, item_code)
 
+                # Validate Quantity
                 if not is_valid_number(qty_val):
                     global_errors.append(f"{row_context} - Error: Quantity '{qty_val}' is not a valid number.")
                     row_has_critical_error = True
 
+                # Validate Rate
                 rate_val = final_row_data.get('rate')
                 if rate_val is None:
                     global_errors.append(f"{row_context} - Error: Quantity is present but 'rate' is missing.")
@@ -139,48 +202,75 @@ def parse_and_validate_excel(file_path):
                     global_errors.append(f"{row_context} - Error: Rate '{rate_val}' is not a valid number.")
                     row_has_critical_error = True
 
+                # Validate Sources
                 if final_row_data.get('rate_src') is None:
                     global_warnings.append(f"{row_context} - Warning: 'rate_src' is missing.")
                 if final_row_data.get('carbon_emission_src') is None:
                     global_warnings.append(f"{row_context} - Warning: 'carbon_emission_src' is missing.")
 
+                # Validate Flexible Numbers
                 for field in FLEXIBLE_FIELD_CONFIG:
                     val = final_row_data.get(field)
                     if val is not None:
                         val_str = str(val).strip().lower()
                         if not is_valid_number(val) and val_str not in ALLOWED_FLEXIBLE_VALUES:
-                            global_errors.append(f"{row_context} - Error: Field '{field}' value '{val}' is invalid.")
+                            global_errors.append(f"{row_context} - Error: Field '{field}' value '{val}' is invalid. Must be number or {ALLOWED_FLEXIBLE_VALUES}.")
                             row_has_critical_error = True
 
+                # Validate Units
                 unit_val = final_row_data.get('unit')
                 if unit_val:
                     if str(unit_val).strip().lower() not in ALLOWED_UNITS:
-                        global_errors.append(f"{row_context} - Error: Unit '{unit_val}' is not valid.")
+                        global_errors.append(f"{row_context} - Error: Unit '{unit_val}' is not valid. Allowed: {ALLOWED_UNITS}")
                         row_has_critical_error = True
                 else:
                     global_errors.append(f"{row_context} - Error: Unit is missing.")
                     row_has_critical_error = True
 
-                recycle_val = final_row_data.get('recycleable')
-                if recycle_val is None or str(recycle_val).strip() == "":
-                    global_warnings.append(f"{row_context} - Warning: 'recycleable' field is blank.")
+                # Validate Recyclability
+                perc_val = final_row_data.get('recyclability_percentage')
+                if perc_val is None or str(perc_val).strip() == "":
+                     global_warnings.append(f"{row_context} - Warning: 'recyclability_percentage' is missing.")
                 else:
-                    if str(recycle_val).strip().lower() not in ALLOWED_RECYCLE_VALUES:
-                        global_errors.append(f"{row_context} - Error: Invalid value '{recycle_val}' for 'recycleable'.")
-                        row_has_critical_error = True
+                    if not is_valid_number(perc_val):
+                         global_errors.append(f"{row_context} - Error: 'recyclability_percentage' '{perc_val}' is not a valid number.")
+                         row_has_critical_error = True
+                    else:
+                        if float(perc_val) > 100:
+                            global_errors.append(f"{row_context} - Error: 'recyclability_percentage' ({perc_val}) cannot be greater than 100.")
+                            row_has_critical_error = True
+                        elif float(perc_val) < 0:
+                            global_errors.append(f"{row_context} - Error: 'recyclability_percentage' ({perc_val}) cannot be negative.")
+                            row_has_critical_error = True
 
+                # Validate Scrap Rate
+                scrap_val = final_row_data.get('scrap_rate')
+                if scrap_val is None or str(scrap_val).strip() == "":
+                    global_warnings.append(f"{row_context} - Warning: 'scrap_rate' is missing.")
+                else:
+                    if not is_valid_number(scrap_val):
+                         global_errors.append(f"{row_context} - Error: 'scrap_rate' '{scrap_val}' is not a valid number.")
+                         row_has_critical_error = True
+
+                # === DUPLICATE CHECK ===
                 name_val = final_row_data.get('name')
                 if name_val:
                     if name_val in section_seen_data:
-                        original = section_seen_data[name_val]
-                        if final_row_data == original['data']:
-                            global_warnings.append(f"{row_context} - Warning: Duplicate material '{name_val}' merged.")
+                        original_entry = section_seen_data[name_val]
+                        original_data = original_entry['data']
+                        original_loc = original_entry['row_id']
+
+                        if final_row_data == original_data:
+                            global_warnings.append(f"{row_context} - Warning: Duplicate material '{name_val}' found with identical values. Rows have been merged.")
                             is_duplicate = True
                         else:
-                            global_errors.append(f"{row_context} - Error: Conflicting duplicate '{name_val}'.")
+                            global_errors.append(f"{row_context} - Error: Duplicate material '{name_val}' found with conflicting values compared to {original_loc}. User selection required.")
                             is_duplicate = True
                     else:
-                        section_seen_data[name_val] = {"data": final_row_data, "row_id": row_context}
+                        section_seen_data[name_val] = {
+                            'data': final_row_data,
+                            'row_id': row_context
+                        }
 
                 if not row_has_critical_error and not is_duplicate:
                     current_section['data'].append(final_row_data)
@@ -188,7 +278,13 @@ def parse_and_validate_excel(file_path):
         if current_section:
             parsed_sections.append(current_section)
 
-    return {"validation_report": {"errors": global_errors, "warnings": global_warnings}, "parsed_data": parsed_sections}
+    return {
+        "validation_report": {
+            "errors": global_errors,
+            "warnings": global_warnings
+        },
+        "parsed_data": parsed_sections
+    }
 
 def show_error_message(error_list, parent=None):
     error_text = "❌ ERRORS FOUND - Import Stopped\n\n" + "═" * 60 + "\n"
@@ -261,7 +357,7 @@ class UiMainWindow(object):
 
             # Write data to JSON
             with open(JSON_DB_PATH, 'w', encoding='utf-8') as f:
-                json.dump(parsed_data, f, indent=4)
+                json.dump(parsed_data, f, indent=4, ensure_ascii=False)
             
             print(f"[DB] ✓ Data successfully saved to: {JSON_DB_PATH}")
             return True
@@ -343,7 +439,7 @@ class UiMainWindow(object):
         }
         
         # Pretty print the dictionary
-        print(json.dumps(final_output, indent=4))
+        print(json.dumps(final_output, indent=4, ensure_ascii=False))
         print("="*60 + "\n")
 
         return grand_total
@@ -402,8 +498,13 @@ class UiMainWindow(object):
         """Removes the temporary JSON database file at application startup."""
         try:
             if os.path.exists(JSON_DB_PATH):
-                os.remove(JSON_DB_PATH)
-                print(f"[CLEANUP] Existing temporary database deleted: {JSON_DB_PATH}")
+                try:
+                    os.remove(JSON_DB_PATH)
+                    print(f"[CLEANUP] Existing temporary database deleted: {JSON_DB_PATH}")
+                except PermissionError:
+                    print(f"[CLEANUP] WARNING: Could not delete {JSON_DB_PATH} (locked). Skipping cleanup.")
+                except Exception as e:
+                    print(f"[CLEANUP] WARNING: Error deleting {JSON_DB_PATH}: {e}")
             else:
                 print("[CLEANUP] No existing temporary database found. Starting fresh.")
                 
@@ -436,8 +537,12 @@ class UiMainWindow(object):
             KEY_SUPERSTRUCTURE: SuperStructure, KEY_SUBSTRUCTURE: SubStructure,
             KEY_AUXILIARY: AuxiliaryWorks, KEY_FINANCIAL: FinancialData,
             KEY_CARBON_EMISSION: CarbonEmissionData, KEY_CARBON_EMISSION_COST: CarbonEmissionCostData,
+            "Carbon Emission Machinery Data": CarbonMachineryWidget,
+            "Carbon Emission Machinery Data": CarbonMachineryWidget,
             KEY_BRIDGE_TRAFFIC: BridgeAndTrafficData, KEY_MAINTAINANCE_REPAIR: MaintenanceRepairData,
-            KEY_DEMOLITION_RECYCLE: DemolitionAndRecyclingData
+            KEY_RECYCLABLE: RecyclableWidget,
+            KEY_DEMOLITION_RECYCLE: DemolitionAndRecyclingData,
+            KEY_TRANSPORTATION_DATA: TransportationMainWidget
         }
 
         if not MainWindow.objectName():
@@ -671,6 +776,7 @@ class UiMainWindow(object):
     # --- Refactored Navigation Logic (Fixes Recursion & Implements Locking) ---
     def show_project_detail_widgets(self, widget_name=None):
         """Handles widget switching and the 'Gatekeeper' logic for construction data."""
+        print(f"[DEBUG] show_project_detail_widgets called with: {widget_name}")
         
         # 1. Normalize the widget name
         if widget_name == KEY_STRUCTURE_WORKS_DATA or widget_name == "Construction work data":
@@ -714,6 +820,7 @@ class UiMainWindow(object):
                 # Create and show the new single widget (Financial, etc.)
                 target_class = self.widget_map.get(widget_name)
                 if target_class:
+                    print(f"[DEBUG] Instantiating widget: {target_class}")
                     self.current_right_widget = target_class(database=self.database_manager, parent=self)
                     
                     # JAWWAD : Pass the project ID if available
@@ -727,6 +834,7 @@ class UiMainWindow(object):
                         self.current_right_widget.back.connect(self.prev_widget)
                         
                     self.right_panel_placeholder.layout().addWidget(self.current_right_widget)
+                    print(f"[DEBUG] Widget added to layout.")
 
         else:
             # -- Default / Project Details Landing Page --

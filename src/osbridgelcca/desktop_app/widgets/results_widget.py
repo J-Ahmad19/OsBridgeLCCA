@@ -9,7 +9,10 @@ import sys
 from osbridgelcca.desktop_app.resources.resources_rc import *
 
 # using the d3js graphing library to plot the graph, it is downloaded locally and saved in the same directory as that of this graph script
-with open(r"osbridgelcca/desktop_app/dependencies/d3js.js", "r", encoding="utf-8") as f:
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+d3js_path = os.path.join(current_dir, "..", "dependencies", "d3js.js")
+with open(d3js_path, "r", encoding="utf-8") as f:
     d3_js = f.read()
 
 class ResultsWidget(QWidget):
