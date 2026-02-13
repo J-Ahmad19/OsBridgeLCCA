@@ -138,8 +138,13 @@ class DatabaseManager:
         
         # Delete existing database if recreate is True
         if recreate and os.path.exists(self.db_path):
-            os.remove(self.db_path)
-            print(f"Deleted existing database: {self.db_path}")
+            try:
+                os.remove(self.db_path)
+                print(f"Deleted existing database: {self.db_path}")
+            except PermissionError:
+                print(f"WARNING: Could not delete existing database {self.db_path} (File locked). Using existing file.")
+            except Exception as e:
+                print(f"WARNING: Error deleting database {self.db_path}: {e}")
         
         self.conn = sqlite3.connect(self.db_path)
         cursor = self.conn.cursor()

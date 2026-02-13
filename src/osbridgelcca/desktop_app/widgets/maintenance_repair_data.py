@@ -1,19 +1,315 @@
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QCoreApplication, Qt, QSize, Signal
-from PySide6.QtWidgets import (QHBoxLayout, QPushButton, QLineEdit, QComboBox, QGridLayout, QWidget, QLabel, QVBoxLayout, QScrollArea, QSpacerItem, QSizePolicy)
+from PySide6.QtWidgets import (QHBoxLayout, QPushButton, QLineEdit, QComboBox, QGridLayout, QWidget, QLabel, QVBoxLayout, QScrollArea, QSpacerItem, QSizePolicy, QRadioButton, QStackedWidget, QFrame, QGroupBox, QFormLayout)
 from PySide6.QtGui import QIcon, QIntValidator
 from osbridgelcca.desktop_app.widgets.utils.data import *
 import sys
 import os
 
-class ComponentWidget(QWidget):
+class GlobalSectionWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.init_ui()
+
     def init_ui(self):
-        self.component_first_scroll_content_layout = QVBoxLayout(self) # Set QVBoxLayout directly on self
-        self.component_first_scroll_content_layout.setContentsMargins(10, 10, 10, 10)
-        self.component_first_scroll_content_layout.setSpacing(10)
+        print("DEBUG: Initializing GlobalSectionWidget with Updated Spacing 0")
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setAlignment(Qt.AlignTop)
+
+        # Create a QGroupBox to match CarbonMachineryWidget's summary blocks
+        self.box_group = QGroupBox("Total Road User Cost Data")
+        self.box_group.setObjectName("summaryGroup")
+        
+        # Using QHBoxLayout for precise control over alignment
+        content_layout = QHBoxLayout()
+        # Adjusted margins to be tighter if needed, but spacing=0 is key for "between" elements
+        content_layout.setContentsMargins(10, 20, 10, 20) 
+        content_layout.setSpacing(0)
+        content_layout.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        
+        self.box_group.setLayout(content_layout)
+
+        # Label for Total Road User Cost
+        label = QLabel("Total Road User Cost:")
+        # Explicit zero margins/padding.
+        label.setStyleSheet("color: #333333; font-size: 12px; font-weight: normal; border: none; margin: 0px; padding: 0px;") 
+        
+        self.cost_input = QLineEdit()
+        self.cost_input.setPlaceholderText("Enter Total Cost")
+        self.cost_input.setFixedWidth(200)
+        self.cost_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 6px; 
+                padding: 6px 10px;
+                font-size: 13px;
+                color: #333333;
+                background-color: white;
+                margin: 0px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #999999; /* Neutral grey focus instead of blue */
+            }
+        """)
+        
+        content_layout.addWidget(label)
+        content_layout.addWidget(self.cost_input)
+        content_layout.addStretch() # Force items to the left
+        
+        layout.addWidget(self.box_group)
+
+ 
+
+    def get_data(self):
+        return self.cost_input.text()
+
+
+class IndiaSectionWidget(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.widgets = []
+        self.init_ui()
+
+    def init_ui(self):
+        self.general_layout = QVBoxLayout(self)
+        self.general_layout.setContentsMargins(10, 20, 10, 10)
+        self.general_layout.setSpacing(10)
+
+        grid_layout = QGridLayout()
+        grid_layout.setHorizontalSpacing(10)
+        grid_layout.setVerticalSpacing(20)
+
+        field_width = 200
+
+        # 1. Annual Routine Inspection cost rate as percentage of total construction cost
+        label2 = QLabel("Routine Inspection Cost Rate\n(Percentage of Initial Construction Cost)")
+        label2.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        ari_input = QLineEdit()
+        self.widgets.append(ari_input)
+        ari_input.setAlignment(Qt.AlignmentFlag.AlignTop)
+        ari_input.setFixedWidth(field_width)
+        ari_input.setText("1")
+        ari_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 10px;
+                padding: 3px 10px;
+            }
+        """)
+        ari_unit = QLabel("(%)")
+        ari_suggested = QLabel("Suggested", parent=self, styleSheet="color: #B3AEAE; font-size: 10px;")
+        grid_layout.addWidget(label2, 0, 0, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(ari_input, 0, 1, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(ari_unit, 0, 2, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(ari_suggested, 0, 3, alignment=Qt.AlignVCenter)
+
+        # 2. Routine Inspection Frequency
+        label5 = QLabel("Routine Inspection Frequency")
+        label5.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        fri_input = QLineEdit()
+        fri_input.setValidator(QIntValidator(fri_input))
+        self.widgets.append(fri_input)
+        fri_input.setAlignment(Qt.AlignmentFlag.AlignTop)
+        fri_input.setFixedWidth(field_width)
+        fri_input.setText("1")
+        fri_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 10px;
+                padding: 3px 10px;
+            }
+        """)
+        fri_unit = QLabel("(years)")
+        fri_suggested = QLabel("Suggested", parent=self, styleSheet="color: #B3AEAE; font-size: 10px;")
+        grid_layout.addWidget(label5, 1, 0, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fri_input, 1, 1, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fri_unit, 1, 2, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fri_suggested, 1, 3, alignment=Qt.AlignVCenter)
+
+        # 3. Periodic Maintenance Cost Rate
+        label1 = QLabel("Periodic Maintenance Cost\n(Percentage of Initial Construction Cost)")
+        label1.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        pmc_input = QLineEdit()
+        self.widgets.append(pmc_input)
+        pmc_input.setAlignment(Qt.AlignmentFlag.AlignTop)
+        pmc_input.setFixedWidth(field_width)
+        pmc_input.setText("0.55")
+        pmc_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 10px;
+                padding: 3px 10px;
+            }
+        """)
+        pmc_unit = QLabel("(%)")
+        pmc_suggested = QLabel("Suggested", parent=self, styleSheet="color: #B3AEAE; font-size: 10px;")
+        grid_layout.addWidget(label1, 2, 0, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_input, 2, 1, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_unit, 2, 2, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_suggested, 2, 3, alignment=Qt.AlignVCenter)
+
+        # 4. Periodic Maintenance Frequency
+        label4 = QLabel("Periodic Maintenance Frequency")
+        label4.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        fpm_input = QLineEdit()
+        fri_input.setValidator(QIntValidator(fri_input))
+        self.widgets.append(fpm_input)
+        fpm_input.setAlignment(Qt.AlignmentFlag.AlignTop)
+        fpm_input.setFixedWidth(field_width)
+        fpm_input.setText("5")
+        fpm_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 10px;
+                padding: 3px 10px;
+            }
+        """)
+        fpm_unit = QLabel("(years)")
+        fpm_suggested = QLabel("Suggested", parent=self, styleSheet="color: #B3AEAE; font-size: 10px;")
+        grid_layout.addWidget(label4, 3, 0, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fpm_input, 3, 1, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fpm_unit, 3, 2, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fpm_suggested, 3, 3, alignment=Qt.AlignVCenter)
+
+        # 5. Major Inspection Cost Rate
+        label1 = QLabel("Major Inspection Cost\n(Percentage of Initial Construction Cost)")
+        label1.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        pmc_input = QLineEdit()
+        self.widgets.append(pmc_input)
+        pmc_input.setAlignment(Qt.AlignmentFlag.AlignTop)
+        pmc_input.setFixedWidth(field_width)
+        pmc_input.setText("0.5")
+        pmc_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 10px;
+                padding: 3px 10px;
+            }
+        """)
+        pmc_unit = QLabel("(%)")
+        pmc_suggested = QLabel("Suggested", parent=self, styleSheet="color: #B3AEAE; font-size: 10px;")
+        grid_layout.addWidget(label1, 4, 0, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_input, 4, 1, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_unit, 4, 2, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_suggested, 4, 3, alignment=Qt.AlignVCenter)
+
+        # 6. Major Inspection Frequency
+        label5 = QLabel("Major Inspection Frequency")
+        label5.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        fri_input = QLineEdit()
+        fri_input.setValidator(QIntValidator(fri_input))
+        self.widgets.append(fri_input)
+        fri_input.setAlignment(Qt.AlignmentFlag.AlignTop)
+        fri_input.setFixedWidth(field_width)
+        fri_input.setText("5")
+        fri_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 10px;
+                padding: 3px 10px;
+            }
+        """)
+        fri_unit = QLabel("(years)")
+        pmc_suggested = QLabel("Suggested", parent=self, styleSheet="color: #B3AEAE; font-size: 10px;")
+        grid_layout.addWidget(label5, 5, 0, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fri_input, 5, 1, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fri_unit, 5, 2, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_suggested, 5, 3, alignment=Qt.AlignVCenter)
+
+        # 5. Major Repair Cost Rate
+        label1 = QLabel("Major Repair Cost\n(Percentage of Initial Construction Cost)")
+        label1.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        pmc_input = QLineEdit()
+        self.widgets.append(pmc_input)
+        pmc_input.setAlignment(Qt.AlignmentFlag.AlignTop)
+        pmc_input.setFixedWidth(field_width)
+        pmc_input.setText("10")
+        pmc_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 10px;
+                padding: 3px 10px;
+            }
+        """)
+        pmc_unit = QLabel("(%)")
+        pmc_suggested = QLabel("Suggested", parent=self, styleSheet="color: #B3AEAE; font-size: 10px;")
+        grid_layout.addWidget(label1, 6, 0, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_input, 6, 1, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_unit, 6, 2, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_suggested, 6, 3, alignment=Qt.AlignVCenter)
+
+
+        # 6. Major Repairs Frequency
+        label5 = QLabel("Major Repair Frequency")
+        label5.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        fri_input = QLineEdit()
+        fri_input.setValidator(QIntValidator(fri_input))
+        self.widgets.append(fri_input)
+        fri_input.setAlignment(Qt.AlignmentFlag.AlignTop)
+        fri_input.setFixedWidth(field_width)
+        fri_input.setText("20")
+        fri_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 10px;
+                padding: 3px 10px;
+            }
+        """)
+        fri_unit = QLabel("(years)")
+        pmc_suggested = QLabel("Suggested", parent=self, styleSheet="color: #B3AEAE; font-size: 10px;")
+        grid_layout.addWidget(label5, 7, 0, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fri_input, 7, 1, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fri_unit, 7, 2, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_suggested, 7, 3, alignment=Qt.AlignVCenter)
+
+        # 7. Replacement cost of bearing and expansion joint
+        label3 = QLabel("Replacement cost of bearing and expansion joint\n(Percentage of Initial Construction Cost of the Superstructure)")
+        label3.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        rr_input = QLineEdit()
+        self.widgets.append(rr_input)
+        rr_input.setAlignment(Qt.AlignmentFlag.AlignTop)
+        rr_input.setFixedWidth(field_width)
+        rr_input.setText("12.5")
+        rr_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 10px;
+                padding: 3px 10px;
+            }
+        """)
+        rr_unit = QLabel("(%)")
+        rr_suggested = QLabel("Suggested", parent=self, styleSheet="color: #B3AEAE; font-size: 10px;")
+        grid_layout.addWidget(label3, 8, 0, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(rr_input, 8, 1, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(rr_unit, 8, 2, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(rr_suggested, 8, 3, alignment=Qt.AlignVCenter)
+
+        # 8. Frequency of Repair cost of bearing and expansion joints
+        label5 = QLabel("Frequency of Repair cost of bearing and expansion joints")
+        label5.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        fri_input = QLineEdit()
+        fri_input.setValidator(QIntValidator(fri_input))
+        self.widgets.append(fri_input)
+        fri_input.setAlignment(Qt.AlignmentFlag.AlignTop)
+        fri_input.setFixedWidth(field_width)
+        fri_input.setText("25")
+        fri_input.setStyleSheet("""
+            QLineEdit {
+                border: 1px solid #DDDCE0;
+                border-radius: 10px;
+                padding: 3px 10px;
+            }
+        """)
+        fri_unit = QLabel("(years)")
+        pmc_suggested = QLabel("Suggested", parent=self, styleSheet="color: #B3AEAE; font-size: 10px;")
+        grid_layout.addWidget(label5, 9, 0, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fri_input, 9, 1, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(fri_unit, 9, 2, alignment=Qt.AlignVCenter)
+        grid_layout.addWidget(pmc_suggested, 9, 3, alignment=Qt.AlignVCenter)
+
+        self.general_layout.addLayout(grid_layout)
+        self.general_layout.addStretch(1)
 
 class MaintenanceRepairData(QWidget):
     closed = Signal()
@@ -142,7 +438,26 @@ class MaintenanceRepairData(QWidget):
                 background-color: #E8E8E8; /* Darker grey on pressed */
                 border-color: #A0A0A0; /* Even darker border */
             }
-            /* (Removed: QComboBox and material grid element CSS) */
+            QRadioButton { font-weight: bold; font-size: 14px; color: black; }
+            
+            /* Styling for the Summary Group Box (copied from CarbonMachineryWidget) */
+            QGroupBox#summaryGroup {
+                font-weight: bold;
+                font-size: 14px;
+                color: black;
+                border: 1px solid #d0c0d8;
+                border-radius: 10px;
+                margin-top: 10px;
+                background-color: #FFF9F9;
+                min-width: 400px;
+                /* min-height: 340px;  Removed min-height to fit content */
+            }
+            QGroupBox#summaryGroup::title {
+                subcontrol-origin: margin;
+                subcontrol-position: top center;
+                padding: 0 10px;
+                background-color: #FFF9F9; 
+            }
         """)
 
 
@@ -164,247 +479,38 @@ class MaintenanceRepairData(QWidget):
         self.scroll_content_layout.setContentsMargins(0,0,0,0)
         self.scroll_content_layout.setSpacing(0)
 
-        # --- Add General Info Form at the top of the scroll area ---
-        self.general_widget = QWidget()
-        self.general_layout = QVBoxLayout(self.general_widget)
-        self.general_layout.setContentsMargins(10, 20, 10, 10)
-        self.general_layout.setSpacing(10)
+        # --- Selection Mechanism (Radio Buttons) ---
+        radio_container = QWidget()
+        radio_layout = QHBoxLayout(radio_container)
+        radio_layout.setContentsMargins(20, 10, 20, 0)
+        radio_layout.setSpacing(20)
+        
+        self.rb_india = QRadioButton("India")
+        self.rb_global = QRadioButton("Global")
+        self.rb_india.setChecked(True)
+        self.rb_india.setCursor(Qt.PointingHandCursor)
+        self.rb_global.setCursor(Qt.PointingHandCursor)
+        
+        self.rb_india.toggled.connect(self.switch_view)
+        
+        radio_layout.addWidget(self.rb_india)
+        radio_layout.addWidget(self.rb_global)
+        radio_layout.addStretch()
+        
+        self.scroll_content_layout.addWidget(radio_container)
 
-        grid_layout = QGridLayout()
-        grid_layout.setHorizontalSpacing(10)
-        grid_layout.setVerticalSpacing(20)
+        # --- Stacked Widget (Views) ---
+        self.stacked_widget = QStackedWidget()
+        self.stacked_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.MinimumExpanding) # Allow it to grow
+        
+        self.india_view = IndiaSectionWidget()
+        self.global_view = GlobalSectionWidget()
+        
+        self.stacked_widget.addWidget(self.india_view)
+        self.stacked_widget.addWidget(self.global_view)
+        
+        self.scroll_content_layout.addWidget(self.stacked_widget)
 
-        field_width = 200
-
-        # 1. Annual Routine Inspection cost rate as percentage of total construction cost
-        label2 = QLabel("Routine Inspection Cost Rate\n(Percentage of Initial Construction Cost)")
-        label2.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        ari_input = QLineEdit()
-        self.widgets.append(ari_input)
-        ari_input.setAlignment(Qt.AlignmentFlag.AlignTop)
-        ari_input.setFixedWidth(field_width)
-        ari_input.setText("1")
-        ari_input.setStyleSheet("""
-            QLineEdit {
-                border: 1px solid #DDDCE0;
-                border-radius: 10px;
-                padding: 3px 10px;
-            }
-        """)
-        ari_unit = QLabel("(%)")
-        ari_suggested = QLabel("Suggested", parent=self.general_widget, styleSheet="color: #B3AEAE; font-size: 10px;")
-        grid_layout.addWidget(label2, 0, 0, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(ari_input, 0, 1, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(ari_unit, 0, 2, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(ari_suggested, 0, 3, alignment=Qt.AlignVCenter)
-
-        # 2. Routine Inspection Frequency
-        label5 = QLabel("Routine Inspection Frequency")
-        label5.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        fri_input = QLineEdit()
-        fri_input.setValidator(QIntValidator(fri_input))
-        self.widgets.append(fri_input)
-        fri_input.setAlignment(Qt.AlignmentFlag.AlignTop)
-        fri_input.setFixedWidth(field_width)
-        fri_input.setText("1")
-        fri_input.setStyleSheet("""
-            QLineEdit {
-                border: 1px solid #DDDCE0;
-                border-radius: 10px;
-                padding: 3px 10px;
-            }
-        """)
-        fri_unit = QLabel("(years)")
-        fri_suggested = QLabel("Suggested", parent=self.general_widget, styleSheet="color: #B3AEAE; font-size: 10px;")
-        grid_layout.addWidget(label5, 1, 0, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fri_input, 1, 1, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fri_unit, 1, 2, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fri_suggested, 1, 3, alignment=Qt.AlignVCenter)
-
-        # 3. Periodic Maintenance Cost Rate
-        label1 = QLabel("Periodic Maintenance Cost\n(Percentage of Initial Construction Cost)")
-        label1.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        pmc_input = QLineEdit()
-        self.widgets.append(pmc_input)
-        pmc_input.setAlignment(Qt.AlignmentFlag.AlignTop)
-        pmc_input.setFixedWidth(field_width)
-        pmc_input.setText("0.55")
-        pmc_input.setStyleSheet("""
-            QLineEdit {
-                border: 1px solid #DDDCE0;
-                border-radius: 10px;
-                padding: 3px 10px;
-            }
-        """)
-        pmc_unit = QLabel("(%)")
-        pmc_suggested = QLabel("Suggested", parent=self.general_widget, styleSheet="color: #B3AEAE; font-size: 10px;")
-        grid_layout.addWidget(label1, 2, 0, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_input, 2, 1, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_unit, 2, 2, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_suggested, 2, 3, alignment=Qt.AlignVCenter)
-
-        # 4. Periodic Maintenance Frequency
-        label4 = QLabel("Periodic Maintenance Frequency")
-        label4.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        fpm_input = QLineEdit()
-        fri_input.setValidator(QIntValidator(fri_input))
-        self.widgets.append(fpm_input)
-        fpm_input.setAlignment(Qt.AlignmentFlag.AlignTop)
-        fpm_input.setFixedWidth(field_width)
-        fpm_input.setText("5")
-        fpm_input.setStyleSheet("""
-            QLineEdit {
-                border: 1px solid #DDDCE0;
-                border-radius: 10px;
-                padding: 3px 10px;
-            }
-        """)
-        fpm_unit = QLabel("(years)")
-        fpm_suggested = QLabel("Suggested", parent=self.general_widget, styleSheet="color: #B3AEAE; font-size: 10px;")
-        grid_layout.addWidget(label4, 3, 0, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fpm_input, 3, 1, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fpm_unit, 3, 2, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fpm_suggested, 3, 3, alignment=Qt.AlignVCenter)
-
-        # 5. Major Inspection Cost Rate
-        label1 = QLabel("Major Inspection Cost\n(Percentage of Initial Construction Cost)")
-        label1.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        pmc_input = QLineEdit()
-        self.widgets.append(pmc_input)
-        pmc_input.setAlignment(Qt.AlignmentFlag.AlignTop)
-        pmc_input.setFixedWidth(field_width)
-        pmc_input.setText("0.5")
-        pmc_input.setStyleSheet("""
-            QLineEdit {
-                border: 1px solid #DDDCE0;
-                border-radius: 10px;
-                padding: 3px 10px;
-            }
-        """)
-        pmc_unit = QLabel("(%)")
-        pmc_suggested = QLabel("Suggested", parent=self.general_widget, styleSheet="color: #B3AEAE; font-size: 10px;")
-        grid_layout.addWidget(label1, 4, 0, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_input, 4, 1, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_unit, 4, 2, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_suggested, 4, 3, alignment=Qt.AlignVCenter)
-
-        # 6. Major Inspection Frequency
-        label5 = QLabel("Major Inspection Frequency")
-        label5.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        fri_input = QLineEdit()
-        fri_input.setValidator(QIntValidator(fri_input))
-        self.widgets.append(fri_input)
-        fri_input.setAlignment(Qt.AlignmentFlag.AlignTop)
-        fri_input.setFixedWidth(field_width)
-        fri_input.setText("5")
-        fri_input.setStyleSheet("""
-            QLineEdit {
-                border: 1px solid #DDDCE0;
-                border-radius: 10px;
-                padding: 3px 10px;
-            }
-        """)
-        fri_unit = QLabel("(years)")
-        pmc_suggested = QLabel("Suggested", parent=self.general_widget, styleSheet="color: #B3AEAE; font-size: 10px;")
-        grid_layout.addWidget(label5, 5, 0, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fri_input, 5, 1, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fri_unit, 5, 2, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_suggested, 5, 3, alignment=Qt.AlignVCenter)
-
-        # 5. Major Repair Cost Rate
-        label1 = QLabel("Major Repair Cost\n(Percentage of Initial Construction Cost)")
-        label1.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        pmc_input = QLineEdit()
-        self.widgets.append(pmc_input)
-        pmc_input.setAlignment(Qt.AlignmentFlag.AlignTop)
-        pmc_input.setFixedWidth(field_width)
-        pmc_input.setText("10")
-        pmc_input.setStyleSheet("""
-            QLineEdit {
-                border: 1px solid #DDDCE0;
-                border-radius: 10px;
-                padding: 3px 10px;
-            }
-        """)
-        pmc_unit = QLabel("(%)")
-        pmc_suggested = QLabel("Suggested", parent=self.general_widget, styleSheet="color: #B3AEAE; font-size: 10px;")
-        grid_layout.addWidget(label1, 6, 0, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_input, 6, 1, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_unit, 6, 2, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_suggested, 6, 3, alignment=Qt.AlignVCenter)
-
-
-        # 6. Major Repairs Frequency
-        label5 = QLabel("Major Repair Frequency")
-        label5.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        fri_input = QLineEdit()
-        fri_input.setValidator(QIntValidator(fri_input))
-        self.widgets.append(fri_input)
-        fri_input.setAlignment(Qt.AlignmentFlag.AlignTop)
-        fri_input.setFixedWidth(field_width)
-        fri_input.setText("20")
-        fri_input.setStyleSheet("""
-            QLineEdit {
-                border: 1px solid #DDDCE0;
-                border-radius: 10px;
-                padding: 3px 10px;
-            }
-        """)
-        fri_unit = QLabel("(years)")
-        pmc_suggested = QLabel("Suggested", parent=self.general_widget, styleSheet="color: #B3AEAE; font-size: 10px;")
-        grid_layout.addWidget(label5, 7, 0, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fri_input, 7, 1, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fri_unit, 7, 2, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_suggested, 7, 3, alignment=Qt.AlignVCenter)
-
-        # 7. Replacement cost of bearing and expansion joint
-        label3 = QLabel("Replacement cost of bearing and expansion joint\n(Percentage of Initial Construction Cost of the Superstructure)")
-        label3.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        rr_input = QLineEdit()
-        self.widgets.append(rr_input)
-        rr_input.setAlignment(Qt.AlignmentFlag.AlignTop)
-        rr_input.setFixedWidth(field_width)
-        rr_input.setText("12.5")
-        rr_input.setStyleSheet("""
-            QLineEdit {
-                border: 1px solid #DDDCE0;
-                border-radius: 10px;
-                padding: 3px 10px;
-            }
-        """)
-        rr_unit = QLabel("(%)")
-        rr_suggested = QLabel("Suggested", parent=self.general_widget, styleSheet="color: #B3AEAE; font-size: 10px;")
-        grid_layout.addWidget(label3, 8, 0, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(rr_input, 8, 1, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(rr_unit, 8, 2, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(rr_suggested, 8, 3, alignment=Qt.AlignVCenter)
-
-        # 8. Frequency of Repair cost of bearing and expansion joints
-        label5 = QLabel("Frequency of Repair cost of bearing and expansion joints")
-        label5.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        fri_input = QLineEdit()
-        fri_input.setValidator(QIntValidator(fri_input))
-        self.widgets.append(fri_input)
-        fri_input.setAlignment(Qt.AlignmentFlag.AlignTop)
-        fri_input.setFixedWidth(field_width)
-        fri_input.setText("25")
-        fri_input.setStyleSheet("""
-            QLineEdit {
-                border: 1px solid #DDDCE0;
-                border-radius: 10px;
-                padding: 3px 10px;
-            }
-        """)
-        fri_unit = QLabel("(years)")
-        pmc_suggested = QLabel("Suggested", parent=self.general_widget, styleSheet="color: #B3AEAE; font-size: 10px;")
-        grid_layout.addWidget(label5, 9, 0, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fri_input, 9, 1, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(fri_unit, 9, 2, alignment=Qt.AlignVCenter)
-        grid_layout.addWidget(pmc_suggested, 9, 3, alignment=Qt.AlignVCenter)
-
-        self.general_layout.addLayout(grid_layout)
-        self.general_layout.addStretch(1)
-        self.scroll_content_layout.addWidget(self.general_widget, alignment=Qt.AlignLeft)
 
         # Create the navigation buttons layout
         self.button_h_layout = QHBoxLayout()
@@ -440,52 +546,55 @@ class MaintenanceRepairData(QWidget):
         self.setParent(None)
 
 
+    def switch_view(self):
+        if self.rb_india.isChecked():
+            self.stacked_widget.setCurrentIndex(0)
+        else:
+            self.stacked_widget.setCurrentIndex(1)
+
     def collect_data(self):
         from pprint import pprint
-        data = {
-            KEY_ROUTINE_INSP_COST: 0.0 if not self.widgets[0].text() else float(self.widgets[0].text())/100,
-            KEY_ROUTINE_INSP_FREQ: 0 if not self.widgets[1].text() else int(self.widgets[1].text()),
-            KEY_PERIODIC_MAINT_COST: 0.0 if not self.widgets[2].text() else float(self.widgets[2].text())/100,
-            KEY_PERIODIC_MAINT_FREQ: 0 if not self.widgets[3].text() else int(self.widgets[3].text()),
-            KEY_MAJOR_INSP_COST: 0.0 if not self.widgets[4].text() else float(self.widgets[4].text())/100,
-            KEY_MAJOR_INSP_FREQ: 0 if not self.widgets[5].text() else int(self.widgets[5].text()),
-            KEY_MAJOR_REPAIR_COST: 0.0 if not self.widgets[6].text() else float(self.widgets[6].text())/100,
-            KEY_MAJOR_REPAIR_FREQ: 0 if not self.widgets[7].text() else int(self.widgets[7].text()),
-            KEY_BEARING_EXP_JOINT_REPAIR_COST: 0.0 if not self.widgets[8].text() else float(self.widgets[8].text())/100,
-            KEY_BEARING_EXP_JOINT_REPAIR_FREQ: 0 if not self.widgets[9].text() else int(self.widgets[9].text())
-        }
-        print("\nCollected Data from Maintainance UI:")
-        pprint(data)
-
-        # Save UI Data to Backend
-        self.database_manager.maintainance_and_repair_data = data
-
-        # Routine Inspection Cost Calculation
-        self.database_manager.routine_inspection_cost() 
-
-        # Periodic Maintenance Cost Calculation
-        self.database_manager.periodic_maintainance_cost()
         
-        # Periodic Maintenance Carbon Emission Cost Calculation
-        self.database_manager.periodic_maintainance_carbon_emission_cost()
-        
-        # Major Inspection Cost
-        self.database_manager.major_inspection_cost()
-        
-        # Major Repair Cost
-        self.database_manager.major_repair_cost()
-        
-        # Major Repair Related Carbon Emisson Cost
-        self.database_manager.major_repair_related_carbon_emission_cost()
+        # Check which view is active
+        if self.rb_india.isChecked():
+            # Collecting Data from India View (Existing logic)
+            # We access the widgets via self.india_view.widgets
+            widgets = self.india_view.widgets
+            
+            data = {
+                KEY_ROUTINE_INSP_COST: 0.0 if not widgets[0].text() else float(widgets[0].text())/100,
+                KEY_ROUTINE_INSP_FREQ: 0 if not widgets[1].text() else int(widgets[1].text()),
+                KEY_PERIODIC_MAINT_COST: 0.0 if not widgets[2].text() else float(widgets[2].text())/100,
+                KEY_PERIODIC_MAINT_FREQ: 0 if not widgets[3].text() else int(widgets[3].text()),
+                KEY_MAJOR_INSP_COST: 0.0 if not widgets[4].text() else float(widgets[4].text())/100,
+                KEY_MAJOR_INSP_FREQ: 0 if not widgets[5].text() else int(widgets[5].text()),
+                KEY_MAJOR_REPAIR_COST: 0.0 if not widgets[6].text() else float(widgets[6].text())/100,
+                KEY_MAJOR_REPAIR_FREQ: 0 if not widgets[7].text() else int(widgets[7].text()),
+                KEY_BEARING_EXP_JOINT_REPAIR_COST: 0.0 if not widgets[8].text() else float(widgets[8].text())/100,
+                KEY_BEARING_EXP_JOINT_REPAIR_FREQ: 0 if not widgets[9].text() else int(widgets[9].text())
+            }
+            print("\nCollected Data from Maintenance UI (India):")
+            pprint(data)
 
-        # 9. Replacement cost of Bearing and Expansion Joints
-        self.database_manager.bearing_expansion_joint_replacement_cost()
+            # Save UI Data to Backend - Existing calculations
+            self.database_manager.maintainance_and_repair_data = data
+            self.database_manager.routine_inspection_cost() 
+            self.database_manager.periodic_maintainance_cost()
+            self.database_manager.periodic_maintainance_carbon_emission_cost()
+            self.database_manager.major_inspection_cost()
+            self.database_manager.major_repair_cost()
+            self.database_manager.major_repair_related_carbon_emission_cost()
+            self.database_manager.bearing_expansion_joint_replacement_cost()
+            self.database_manager.carbon_emission_rerouting_during_major_repairs()
+            self.database_manager.carbon_emission_rerouting_during_replacement()
 
-        # Carbon Emission due to rerouting during Major Repairs
-        self.database_manager.carbon_emission_rerouting_during_major_repairs()
+        else:
+            # Collecting Data from Global View
+            global_cost = self.global_view.get_data()
+            print(f"\nCollected Data from Maintenance UI (Global): Total Road User Cost = {global_cost}")
+            # Placeholder: We currently don't have a backend slot for "Global Total Cost". 
+            # If needed, we would update self.database_manager or similar here.
 
-        # Carbon Emission due to rerouting during Replacement
-        self.database_manager.carbon_emission_rerouting_during_replacement()
 
 #----------------Standalone-Test-Code--------------------------------
 
