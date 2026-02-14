@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (QApplication, QMainWindow, QDialog, QFormLayout, QCheckBox, QGroupBox,
                                QHBoxLayout, QPushButton, QLineEdit, QComboBox, QGridLayout, QWidget, 
                                QLabel, QVBoxLayout, QScrollArea, QSpacerItem, QSizePolicy, QFrame, 
-                               QMessageBox, QCompleter, QListWidget, QAbstractItemView, QToolTip)
+                               QMessageBox, QCompleter, QListWidget, QAbstractItemView, QToolTip, QInputDialog)
 from PySide6.QtCore import (QCoreApplication, Qt, QSize, Signal, QStringListModel, QPoint, QEvent, 
                             QObject, QTimer, QRect, Slot) 
 from PySide6.QtGui import QIcon, QDoubleValidator, QIntValidator, QCursor
@@ -26,6 +26,13 @@ try:
 except ImportError:
     print("Warning: ProjectDataManager not found. Real-time saving disabled.")
     ProjectDataManager = None
+
+# JAWWAD: Import MaterialDatabaseManager for User Library features
+try:
+    from osbridgelcca.desktop_app.core.material_db_manager import MaterialDatabaseManager
+except ImportError:
+    print("Warning: MaterialDatabaseManager not found. DB saving features will be limited.")
+    MaterialDatabaseManager = None
 
 # --- NEW: Event Filter for Locking Logic (Fixed Flickering) ---
 class LockEventFilter(QObject):
@@ -61,13 +68,23 @@ class MaterialInputPopup(QDialog):
     def __init__(self, material_data_source, component_name, current_region, current_sor, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Material Details")
-        self.setFixedWidth(750) 
+        
+        # --- WINDOW SIZE OPTIMIZATION ---
+        self.setMinimumWidth(600)
+        self.resize(650, 700) # Default size
+        self.setMaximumHeight(900) 
+        
         self.material_data_source = material_data_source
         self.component_name = component_name
         # Store context
         self.current_region = current_region
         self.current_sor = current_sor
         
+        if MaterialDatabaseManager:
+            self.db_manager = MaterialDatabaseManager()
+        else:
+            self.db_manager = None
+
         self.result_data = None
         
         self.init_ui()
@@ -80,7 +97,7 @@ class MaterialInputPopup(QDialog):
             QDialog { background-color: #ffffff; }
             QLabel { font-size: 12px; color: #333; font-family: 'Segoe UI', sans-serif; }
             QLineEdit, QComboBox {
-                border: 1px solid #cccccc; border-radius: 8px; padding: 6px 10px;
+                border: 1px solid #cccccc; border-radius: 8px; padding: 5px 8px;
                 background-color: #fcfcfc; font-size: 12px;
             }
             QLineEdit:focus, QComboBox:focus { border: 1px solid #007BFF; background-color: #ffffff; }
@@ -89,11 +106,12 @@ class MaterialInputPopup(QDialog):
             QListWidget::item:selected { background-color: #e6f3ff; color: #000; }
             QListWidget::item:hover { background-color: #f5f5f5; }
             QPushButton { border-radius: 6px; padding: 8px 16px; font-weight: bold; }
+            QScrollArea { border: none; background-color: transparent; }
         """)
 
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(25, 25, 25, 25)
-        layout.setSpacing(15)
+        layout.setContentsMargins(15, 15, 15, 15)
+        layout.setSpacing(10)
         
         # --- DYNAMIC HEADER ---
         header_text_val = f"Region: {self.current_region}, Selected SOR: {self.current_sor}\nAdding in Super-Structure > {self.component_name} Component"
@@ -102,16 +120,40 @@ class MaterialInputPopup(QDialog):
         header_text.setStyleSheet("font-weight: bold; color: #2c3e50; font-size: 13px; margin-bottom: 5px;")
         layout.addWidget(header_text)
         
+        # 2. SCROLL AREA (Contains the form)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setFrameShape(QFrame.NoFrame)
+        
+        # Container Widget inside Scroll Area
+        self.scroll_content_widget = QWidget()
+        self.scroll_layout = QVBoxLayout(self.scroll_content_widget)
+        self.scroll_layout.setContentsMargins(5, 0, 10, 0) # Right margin for scrollbar
+        self.scroll_layout.setSpacing(10)
+
         self.form_layout = QFormLayout()
-        self.form_layout.setSpacing(12)
+        self.form_layout.setSpacing(10)
         self.form_layout.setLabelAlignment(Qt.AlignLeft)
         
+        # --- Form Fields ---
+        self.search_source_combo = QComboBox()
+        self.search_source_combo.addItems(["All Sources", "Standard Database (SOR)", "User Personal Libraries"])
+        self.search_source_combo.setToolTip("Choose which database to search in")
+        self.search_source_combo.currentTextChanged.connect(self.on_search_source_changed)
+        self.form_layout.addRow("Search Source:", self.search_source_combo)
+
+        self.specific_lib_combo = QComboBox()
+        self.specific_lib_combo.setVisible(False)
+        self.specific_lib_combo.currentTextChanged.connect(lambda: self.update_search_results(self.material_input.text()))
+        self.form_layout.addRow("Select Library:", self.specific_lib_combo)
+
         self.material_input = QLineEdit()
         self.material_input.setPlaceholderText(f"Search {self.component_name}...")
         self.material_input.textEdited.connect(self.update_search_results)
         self.material_input.textChanged.connect(self.on_material_text_changed)
-        self.form_layout.addRow("Material", self.material_input)
+        self.form_layout.addRow("Material Name", self.material_input)
         
+        # Suggestion List (Floating - added to self, not scroll area, to float correctly)
         self.suggestion_list = QListWidget(self)
         self.suggestion_list.setWindowFlags(Qt.SubWindow)
         self.suggestion_list.setFocusPolicy(Qt.NoFocus)
@@ -156,18 +198,13 @@ class MaterialInputPopup(QDialog):
         self.carbon_source_edit = QLineEdit()
         self.form_layout.addRow("Carbon factor source", self.carbon_source_edit)
         
-        layout.addLayout(self.form_layout)
+        self.scroll_layout.addLayout(self.form_layout)
         
-        self.error_label = QLabel("")
-        self.error_label.setStyleSheet("color: #dc3545; font-weight: 600; font-size: 11px;")
-        self.error_label.setWordWrap(True)
-        layout.addWidget(self.error_label)
-
         # --- RECYCLABLE SECTION ---
         self.recyclable_check = QCheckBox("Recyclable")
         # JAWWAD: Connect toggled signal to show/hide extra fields
         self.recyclable_check.toggled.connect(self.on_recyclable_toggled)
-        layout.addWidget(self.recyclable_check)
+        self.scroll_layout.addWidget(self.recyclable_check)
 
         # JAWWAD: Container for extra fields when Recyclable is checked
         self.recyclable_fields_widget = QWidget()
@@ -190,19 +227,48 @@ class MaterialInputPopup(QDialog):
 
         # JAWWAD: Initially hidden
         self.recyclable_fields_widget.setVisible(False)
-        layout.addWidget(self.recyclable_fields_widget)
+        self.scroll_layout.addWidget(self.recyclable_fields_widget)
         # --- END RECYCLABLE SECTION ---
         
         self.edit_check = QCheckBox("Edit")
         self.edit_check.toggled.connect(self.on_edit_toggled)
         self.edit_check.setVisible(False) 
-        layout.addWidget(self.edit_check)
+        self.scroll_layout.addWidget(self.edit_check)
         
-        self.save_db_check = QCheckBox("Save to database")
-        self.save_db_check.setVisible(False)
-        layout.addWidget(self.save_db_check)
+        self.db_selection_widget = QWidget()
+        self.db_selection_layout = QHBoxLayout(self.db_selection_widget)
+        self.db_selection_layout.setContentsMargins(0, 5, 0, 5)
+        self.db_selection_layout.setSpacing(10)
+
+        self.save_db_label = QLabel("Save to Database:")
+        self.db_selection_layout.addWidget(self.save_db_label)
+
+        self.save_db_combo = QComboBox()
+        self.save_db_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.populate_db_combo() 
+        self.db_selection_layout.addWidget(self.save_db_combo)
+
+        self.new_db_btn = QPushButton("+ New DB")
+        self.new_db_btn.setFixedWidth(80)
+        self.new_db_btn.setStyleSheet("background-color: #28a745; color: white; padding: 5px;")
+        self.new_db_btn.setCursor(Qt.PointingHandCursor)
+        self.new_db_btn.clicked.connect(self.create_new_database)
+        self.db_selection_layout.addWidget(self.new_db_btn)
+
+        self.db_selection_widget.setVisible(False) 
+        self.scroll_layout.addWidget(self.db_selection_widget)
         
-        layout.addSpacerItem(QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        # Add Spacer at bottom of scroll content to push things up
+        self.scroll_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
+
+        # Set Widget to Scroll Area
+        self.scroll_area.setWidget(self.scroll_content_widget)
+        layout.addWidget(self.scroll_area)
+        
+        self.error_label = QLabel("")
+        self.error_label.setStyleSheet("color: #dc3545; font-weight: 600; font-size: 11px;")
+        self.error_label.setWordWrap(True)
+        layout.addWidget(self.error_label)
 
         btn_layout = QHBoxLayout()
         btn_layout.setSpacing(10)
@@ -270,26 +336,103 @@ class MaterialInputPopup(QDialog):
             self.scrap_rate_edit.clear()
             self.percentage_qty_edit.clear()
 
-    def update_search_results(self, text):
-        if not sor_manager or not sor_manager.searcher: return
+    # --- Handler for Source Change ---
+    def on_search_source_changed(self, text):
+        if text == "User Personal Libraries":
+            self.populate_specific_libs()
+            self.specific_lib_combo.setVisible(True)
+        else:
+            self.specific_lib_combo.setVisible(False)
         
-        # Search Backend ONLY
-        backend_results = sor_manager.searcher.performSearch([self.component_name.lower()], text)
-        backend_items = [item['name'] for item in backend_results]
+        # Trigger update
+        self.update_search_results(self.material_input.text())
 
-        all_items = sorted(list(set(backend_items)))
-        self.suggestion_list.clear()
-        
+    def populate_specific_libs(self):
+        self.specific_lib_combo.blockSignals(True)
+        self.specific_lib_combo.clear()
+        self.specific_lib_combo.addItem("All User Libraries")
+        if self.db_manager:
+            try:
+                dbs = self.db_manager.get_available_databases()
+                for db in dbs:
+                    self.specific_lib_combo.addItem(db['name'])
+            except Exception as e:
+                print(f"Error populating specific libs: {e}")
+        self.specific_lib_combo.blockSignals(False)
+
+    def update_search_results(self, text):
         if not text.strip():
             self.suggestion_list.hide()
             return
 
-        if all_items:
-            self.suggestion_list.addItems(all_items)
+        all_items = []
+        source_selection = self.search_source_combo.currentText()
+
+        # 1. Search Standard SOR (Backend)
+        if source_selection in ["All Sources", "Standard Database (SOR)"]:
+            if sor_manager and sor_manager.searcher:
+                backend_results = sor_manager.searcher.performSearch([self.component_name.lower()], text)
+                all_items.extend([item['name'] for item in backend_results])
+
+        # 2. Search User Databases
+        if source_selection in ["All Sources", "User Personal Libraries"]:
+            if self.db_manager:
+                # Get ALL matching items first
+                user_results = self.db_manager.search_all_databases(text)
+                
+                # Apply Sub-Library Filter if applicable
+                if source_selection == "User Personal Libraries":
+                    specific_lib = self.specific_lib_combo.currentText()
+                    if specific_lib and specific_lib != "All User Libraries":
+                        # Filter the results based on 'db_name'
+                        user_results = [r for r in user_results if r.get('db_name') == specific_lib]
+
+                all_items.extend([item['name'] for item in user_results])
+
+        unique_items = sorted(list(set(all_items)))
+        
+        self.suggestion_list.clear()
+        
+        if unique_items:
+            self.suggestion_list.addItems(unique_items)
             self.adjust_list_position() 
             self.suggestion_list.show()
         else:
             self.suggestion_list.hide()
+
+    def populate_db_combo(self):
+        self.save_db_combo.clear()
+        self.save_db_combo.addItem("Do not save", None)
+        if self.db_manager:
+            try:
+                dbs = self.db_manager.get_available_databases()
+                for db in dbs:
+                    # Uses db['name'] for both text and data for Master DB tagging
+                    self.save_db_combo.addItem(db['name'], db['name'])
+            except Exception as e:
+                print(f"Error loading databases: {e}")
+
+    def create_new_database(self):
+        if not self.db_manager:
+            QMessageBox.critical(self, "Error", "Database Manager not loaded.")
+            return
+        name, ok = QInputDialog.getText(self, "New Database", "Enter Database Name:")
+        if ok and name.strip():
+            try:
+                new_path = self.db_manager.create_new_database(name.strip())
+                self.populate_db_combo()
+                
+                # Search by text (Name) to select the new library
+                index = self.save_db_combo.findText(name.strip())
+                if index >= 0:
+                    self.save_db_combo.setCurrentIndex(index)
+                
+                # Refresh filter list too if visible
+                if self.specific_lib_combo.isVisible():
+                    self.populate_specific_libs()
+                    
+            except Exception as e:
+                QMessageBox.critical(self, "Error", f"Failed to create database: {str(e)}")
 
     def on_suggestion_clicked(self, item):
         self.material_input.setText(item.text())
@@ -297,19 +440,25 @@ class MaterialInputPopup(QDialog):
 
     def on_material_text_changed(self, text):
         self.error_label.setText("") 
-        backend_data = None
+        found_data = None
+        source_type = None 
         
-        if sor_manager and sor_manager.searcher:
-            backend_data = sor_manager.searcher.getDetailByName(text)
+        source_selection = self.search_source_combo.currentText()
+        check_standard = source_selection in ["All Sources", "Standard Database (SOR)"]
+        check_user = source_selection in ["All Sources", "User Personal Libraries"]
 
-        if backend_data:
-            self.status_label.setText(f"✅ Found standard material: {backend_data.get('name')}")
-            self.status_label.setStyleSheet("color: green; font-size: 11px; margin-left: 2px;")
-            self.edit_check.setVisible(True)
-            self.edit_check.setChecked(False)
-            self.save_db_check.setVisible(False)
-            
-            unit = backend_data.get("unit", "")
+        if check_standard and sor_manager and sor_manager.searcher:
+            found_data = sor_manager.searcher.getDetailByName(text)
+            if found_data: source_type = "standard"
+
+        if not found_data and check_user and self.db_manager:
+            found_data = self.db_manager.get_material_details(text)
+            if found_data: source_type = "user"
+        
+        if found_data:
+            unit = found_data.get("unit", "")
+            if not unit and source_type == "user": unit = found_data.get("unit", "")
+
             index = self.unit_combo.findText(unit)
             if index != -1:
                 self.unit_combo.setCurrentIndex(index)
@@ -317,21 +466,34 @@ class MaterialInputPopup(QDialog):
                 self.unit_combo.addItem(unit)
                 self.unit_combo.setCurrentText(unit)
             
-            self.rate_edit.setText(str(backend_data.get("rate", "")))
-            self.rate_source_edit.setText(backend_data.get("rate_src", ""))
-            self.carbon_edit.setText(str(backend_data.get("carbon_emission", "")))
-            self.carbon_unit_edit.setText(backend_data.get("carbon_emission_units", ""))
-            self.conv_factor_edit.setText(str(backend_data.get("conversion_factor", "")))
-            self.carbon_source_edit.setText(backend_data.get("carbon_emission_src", ""))
+            self.rate_edit.setText(str(found_data.get("rate", "")))
+            self.rate_source_edit.setText(found_data.get("rate_src") or found_data.get("rate_source", ""))
+            self.carbon_edit.setText(str(found_data.get("carbon_emission", "")))
+            self.carbon_unit_edit.setText(found_data.get("carbon_emission_units") or found_data.get("carbon_unit", ""))
+            self.conv_factor_edit.setText(str(found_data.get("conversion_factor", "")))
+            self.carbon_source_edit.setText(found_data.get("carbon_emission_src") or found_data.get("carbon_source", ""))
             
-            is_recyclable = str(backend_data.get("recycleable", "")).lower() == "recyclable"
+            is_recyclable = False
+            if source_type == "standard":
+                self.status_label.setText(f"✅ Found standard material: {found_data.get('name')}")
+                self.status_label.setStyleSheet("color: green; font-size: 11px; margin-left: 2px;")
+                is_recyclable = str(found_data.get("recycleable", "")).lower() == "recyclable"
+            
+            elif source_type == "user":
+                db_name = found_data.get("origin_db_name", "User DB")
+                self.status_label.setText(f"📂 Found in User Database: {db_name}")
+                self.status_label.setStyleSheet("color: #007BFF; font-weight: bold; font-size: 11px; margin-left: 2px;")
+                is_recyclable = False 
+
             self.recyclable_check.setChecked(is_recyclable)
+            self.edit_check.setVisible(True)
+            self.edit_check.setChecked(False)
             self.set_fields_readonly(True)
-            
+            self.db_selection_widget.setVisible(False)
         else:
             self.status_label.setText("") 
             self.edit_check.setVisible(False)
-            self.save_db_check.setVisible(True)
+            self.db_selection_widget.setVisible(True)
             self.set_fields_readonly(False)
 
     def on_edit_toggled(self, checked):
@@ -339,12 +501,12 @@ class MaterialInputPopup(QDialog):
             self.set_fields_readonly(False)
             self.rate_source_edit.clear()
             self.carbon_source_edit.clear()
-            self.save_db_check.setVisible(True)
-            self.save_db_check.setChecked(False)
+            self.db_selection_widget.setVisible(True)
+            self.save_db_combo.setCurrentIndex(0) 
             self.edit_check.setVisible(False) 
         else:
             self.set_fields_readonly(True)
-            self.save_db_check.setVisible(False)
+            self.db_selection_widget.setVisible(False)
 
     def set_fields_readonly(self, readonly):
         self.unit_combo.setEnabled(not readonly)
@@ -403,6 +565,14 @@ class MaterialInputPopup(QDialog):
             except ValueError:
                 errors.append("Conversion Factor must be a valid number.")
 
+        c_text = self.carbon_edit.text().strip()
+        if c_text and c_text.lower() not in ["na", "not_available", "not available"]:
+            try:
+                c_val = float(c_text)
+                if c_val < 0: errors.append("Carbon Emission must be ≥ 0.")
+            except ValueError:
+                errors.append("Carbon Emission must be a number or 'NA'.")
+
         # JAWWAD: Validate Recyclable Fields
         if self.recyclable_check.isChecked():
             scrap_text = self.scrap_rate_edit.text().strip()
@@ -425,14 +595,9 @@ class MaterialInputPopup(QDialog):
                 except ValueError:
                     errors.append("Percentage must be a valid number.")
 
-        if self.save_db_check.isChecked():
-            existing_keys = [k.lower() for k in self.material_data_source.keys()]
-            backend_exists = False
-            if sor_manager and sor_manager.searcher and sor_manager.searcher.getDetailByName(name):
-                backend_exists = True
-            if name.lower() in existing_keys or backend_exists:
-                errors.append(f"Material '{name}' already exists in the database.")
-
+        # This will now contain the NAME of the database (e.g., "MyProjectLib")
+        selected_db_path = self.save_db_combo.currentData()
+        
         if errors:
             self.error_label.setText("\n".join(errors))
             return
@@ -456,7 +621,8 @@ class MaterialInputPopup(QDialog):
             # JAWWAD: Add new keys to result data
             "scrap_rate": self.scrap_rate_edit.text() if self.recyclable_check.isChecked() else "",
             "recycle_percentage": self.percentage_qty_edit.text() if self.recyclable_check.isChecked() else "",
-            "save_to_db": self.save_db_check.isChecked(),
+            "target_db": selected_db_path,
+            "save_to_db": True if selected_db_path else False,
             "is_custom": is_custom
         }
         
@@ -479,7 +645,8 @@ class MaterialInputPopup(QDialog):
         self.carbon_source_edit.clear()
         # JAWWAD: Clear recyclability check which also hides and clears extra fields
         self.recyclable_check.setChecked(False) 
-        self.save_db_check.setChecked(False)
+        self.save_db_combo.setCurrentIndex(0)
+        self.db_selection_widget.setVisible(False)
         self.edit_check.setChecked(False)
         self.edit_check.setVisible(False)
         self.unit_combo.setCurrentIndex(0)
@@ -650,7 +817,8 @@ class ComponentWidget(QWidget):
                          # JAWWAD: Capture new fields in collected data
                          "scrap_rate": row.get("scrap_rate", ""),
                          "recycle_percentage": row.get("recycle_percentage", ""),
-                         "save_to_db": row.get("save_to_db", False)
+                         "save_to_db": row.get("save_to_db", False),
+                         "target_db": row.get("target_db", None)
                         }
             rows_data.append(row_dict)
         return rows_data
@@ -755,7 +923,7 @@ class ComponentWidget(QWidget):
                 sub_cat ="super_structure"
                 
                 # We assume delete_material_item exists in data_manager
-                self.parent_widget.data_manager.delete_material_item(
+                self.parent_widget.data_manager.soft_delete_material_item(
                     project_id=self.parent_widget.project_id,
                     category="construction_work_data",
                     sub_category=sub_cat,
@@ -858,7 +1026,14 @@ class ComponentWidget(QWidget):
         self.material_grid_layout.addWidget(remove_button, row_idx, 6, alignment=Qt.AlignCenter)
         
         row_widgets['remove_button'] = remove_button
+        
+        type_material_input.textChanged.connect(
+            lambda text, unit_widget=unit_combo_m3: self._on_type_material_changed(text, unit_widget)
+        )
 
+        self.material_rows.append(row_widgets)
+        self.current_material_row_idx += 1
+        
         if data:
             type_material_input.setText(data.get(KEY_TYPE, ""))
             self.update_comp_units(type_material_input.text(), unit_combo_m3)
@@ -883,10 +1058,8 @@ class ComponentWidget(QWidget):
             row_widgets["recycle_percentage"] = data.get("recycle_percentage")
             # JAWWAD: End Saving
             row_widgets["save_to_db"] = data.get("save_to_db")
+            row_widgets["target_db"] = data.get("target_db")
 
-        self.material_rows.append(row_widgets)
-        self.current_material_row_idx += 1
-        
         self.updateGeometry()
         self.adjustSize()
         self._on_value_changed()
@@ -1012,6 +1185,7 @@ class ComponentWidget(QWidget):
             row_widgets["recycle_percentage"] = data.get("recycle_percentage")
             # JAWWAD: End Saving
             row_widgets["save_to_db"] = data.get("save_to_db")
+            row_widgets["target_db"] = data.get("target_db")
 
         self.updateGeometry()
         self.adjustSize()
@@ -1355,7 +1529,7 @@ class SuperStructure(QWidget):
         """)
         
         self.left_panel_vlayout = QVBoxLayout(self)
-        self.left_panel_vlayout.setContentsMargins(0, 0, 0, 0)
+        self.left_panel_vlayout.setContentsMargins(0,0,0,0)
         self.left_panel_vlayout.setSpacing(0)
 
         header_container = QWidget()
@@ -1371,7 +1545,7 @@ class SuperStructure(QWidget):
             self.region_combo.addItems(sor_manager.get_regions())
             sor_manager.registry_updated.connect(self.refresh_ui_options)
         else:
-            self.region_combo.addItems(["India", "USA"]) 
+            self.region_combo.addItems(["India", "USA"])
             
         self.region_combo.currentTextChanged.connect(self.on_region_changed)
         header_layout.addWidget(self.region_combo)
@@ -1389,6 +1563,20 @@ class SuperStructure(QWidget):
         
         self.left_panel_vlayout.addWidget(header_container)
 
+        lock_hlayout = QHBoxLayout()
+        lock_hlayout.setContentsMargins(0,2,2,0)
+        lock_hlayout.setSpacing(0)
+        lock_hlayout.addStretch()
+
+        self.lock_button = QPushButton("🔓") 
+        self.lock_button.setObjectName("lock_button")
+        self.lock_button.setFixedSize(30, 30) 
+        self.lock_button.setCursor(Qt.PointingHandCursor)
+        self.lock_button.setProperty("locked", "false")
+        self.lock_button.clicked.connect(self.toggle_lock)
+        self.lock_button.setToolTip("Click to Lock Editing") 
+        lock_hlayout.addWidget(self.lock_button)
+
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
 
@@ -1401,25 +1589,11 @@ class SuperStructure(QWidget):
         self.scroll_content_layout.setContentsMargins(0,0,0,0)
         self.scroll_content_layout.setSpacing(0)
 
-        lock_hlayout = QHBoxLayout()
-        lock_hlayout.setContentsMargins(0,2,2,0)
-        lock_hlayout.setSpacing(0)
-        lock_hlayout.addStretch()
-
-        self.lock_button = QPushButton("🔓")
-        self.lock_button.setObjectName("lock_button")
-        self.lock_button.setFixedSize(30, 30) 
-        self.lock_button.setCursor(Qt.PointingHandCursor)
-        self.lock_button.setProperty("locked", "false")
-        self.lock_button.clicked.connect(self.toggle_lock)
-        self.lock_button.setToolTip("Click to Lock Editing") 
-        lock_hlayout.addWidget(self.lock_button)
-
         self.scroll_content_layout.addLayout(lock_hlayout)
 
         self.add_component_button = QPushButton("+ Add Component")
         self.add_component_button.setObjectName("add_component_button")
-        self.add_component_button.installEventFilter(self.lock_filter)
+        self.add_component_button.installEventFilter(self.lock_filter) 
         self.add_component_button.clicked.connect(self.add_component_layout)
 
         self.button_h_layout = QHBoxLayout()
@@ -1504,7 +1678,7 @@ class SuperStructure(QWidget):
 
     def toggle_lock(self):
         self.set_form_locked(not self.is_locked)
-     
+       
     def set_form_locked(self, locked):
         self.is_locked = locked
         
@@ -1581,12 +1755,12 @@ class SuperStructure(QWidget):
             component_data = component_widget.collect_data()
             all_data.append(component_data)
         return all_data
-     
+      
     def mark_state_changed(self):
         if self._initializing:
             return
         self.state_changed = True
-     
+      
     def save_data(self):
         from pprint import pprint
         data = self.collect_data()
@@ -1599,7 +1773,7 @@ class SuperStructure(QWidget):
         else:
             self.data_id = self.database_manager.input_data_row(KEY_SUPERSTRUCTURE, data)
         self.state_changed = False
-     
+      
     def on_next_clicked(self):
         if not self.state_changed:
             self.next.emit(KEY_SUPERSTRUCTURE)
@@ -1620,7 +1794,7 @@ class SuperStructure(QWidget):
     def close_widget(self):
         self.closed.emit()
         self.setParent(None)
-     
+      
     #Ritik - START: Improved Excel Data Mapping for SuperStructure Widget
     def load_from_excel_sections(self, sections_data):
         """
@@ -1752,11 +1926,27 @@ class SuperStructure(QWidget):
                         "is_custom": True
                     }
                     
+                    # --- CRITICAL FIX START: Register ID with Backend immediately ---
+                    saved_id = None
+                    if self.data_manager and self.project_id:
+                        try:
+                            # Save to autosave.json to generate a UUID so soft-delete works later
+                            saved_id = self.data_manager.add_material_item(
+                                project_id=self.project_id,
+                                category="construction_work_data",
+                                sub_category="super_structure",
+                                material_data=mapped_data
+                            )
+                            print(f"      [DB] Registered Item ID: {saved_id}")
+                        except Exception as e:
+                            print(f"      [ERROR] Could not save to backend: {e}")
+                    # --- CRITICAL FIX END ---
+
                     if hasattr(new_comp_widget, 'add_custom_material_row'):
-                        new_comp_widget.add_custom_material_row(mapped_data)
+                        new_comp_widget.add_custom_material_row(mapped_data, item_id=saved_id)
                         print(f"      ✓ Material {row_idx}: {material_name} | {quantity_str} {unit_val} @ {rate_source}")
                     else:
-                        new_comp_widget.add_material_row(mapped_data)
+                        new_comp_widget.add_material_row(mapped_data, item_id=saved_id)
                         print(f"      ✓ Material {row_idx}: {material_name} | {quantity_str} {unit_val}")
                         
                 except Exception as e:

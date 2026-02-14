@@ -1,0 +1,25 @@
+{
+    "general_info": {
+        "project_id": "0ff712a0-b9f3-4006-8025-2689d13789a6",
+        "project_name": "fkllds",
+        "company_name": "dskdkls",
+        "description": "fdsalk",
+        "valuer": "fjkdlsa",
+        "job_number": "jfklda",
+        "client": "fjdlka",
+        "country": "India",
+        "region": "India",
+        "sor": "Bihar",
+        "base_year": "2024",
+        "currency": "INR",
+        "created_on": "2026-02-14T15:13:57.806206",
+        "modified_on": "2026-02-14T15:13:57.806206",
+        "version": 1
+    },
+    "input_param": {},
+    "Financial": {},
+    "Maintenace_repair": {},
+    "Carbon_emission": {},
+    "Bridge_and_traffic": {},
+    "Demolition_and_recycling": {}
+}
