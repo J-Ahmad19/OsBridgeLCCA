@@ -1,0 +1,13 @@
+{
+    "id": "2cab102f-9701-47b6-a96b-beef762bec3c",
+    "name": "fjdasl",
+    "status": "draft",
+    "user_name": "root",
+    "sys_info": {
+        "os": "Darwin",
+        "architecture": "arm64",
+        "app_version": "1.0.0"
+    },
+    "created_on": "2026-02-14T14:13:54.588194",
+    "version": 1
+}

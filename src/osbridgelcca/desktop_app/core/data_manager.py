@@ -197,6 +197,7 @@ class ProjectDataManager:
                 # 4. Process individual rows
                 for row in section.get('data', []):
                     # Prepare data dictionary for _create_item_structure
+                    # MAPPING UPDATED TO MATCH PARSED EXCEL KEYS FROM TERMINAL
                     mapped_data = {
                         "type": row.get("name"),           
                         "material_name": row.get("name"),
@@ -206,10 +207,12 @@ class ProjectDataManager:
                         "rate_data_source": row.get("rate_src"),
                         "carbon_emission": row.get("carbon_emission", "not_available"),
                         "carbon_source": row.get("carbon_emission_src", ""),
-                        "carbon_unit": row.get("carbon_unit", ""),
+                        "carbon_unit": row.get("carbon_emission_units", ""), # Updated Key
                         "conversion_factor": row.get("conversion_factor", ""),
                         # Logic check for recyclable string to boolean
                         "recyclable": row.get("recycleable") == "recyclable", 
+                        "scrap_rate": row.get("scrap_rate", 5),
+                        "recycle_percentage": row.get("recycle_percentage", 80),
                         "is_custom": True # Imported data is treated as user-defined
                     }
 
@@ -411,15 +414,11 @@ class ProjectDataManager:
         """Helper to append deleted item to a bin file"""
         
         # --- PATH FIX: Calculate Absolute Path based on file location ---
-        # data_manager.py is in .../osbridgelcca/desktop_app/core/
-        # projects folder is in .../osbridgelcca/projects/
-        
-        current_dir = os.path.dirname(os.path.abspath(__file__)) # .../core
-        desktop_app_dir = os.path.dirname(current_dir)           # .../desktop_app
-        package_dir = os.path.dirname(desktop_app_dir)           # .../osbridgelcca
+        current_dir = os.path.dirname(os.path.abspath(__file__)) 
+        desktop_app_dir = os.path.dirname(current_dir)           
+        package_dir = os.path.dirname(desktop_app_dir)           
         projects_root = os.path.join(package_dir, "projects")
         
-        # This creates the correct path regardless of where the script is run from
         project_path = os.path.join(projects_root, project_id)
 
         # Fallback safety check

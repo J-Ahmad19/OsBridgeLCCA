@@ -1,0 +1,13 @@
+{
+    "id": "c89c2c95-ff34-42b6-aedc-9a8c2e3a2c50",
+    "name": "fndkla",
+    "status": "draft",
+    "user_name": "root",
+    "sys_info": {
+        "os": "Darwin",
+        "architecture": "arm64",
+        "app_version": "1.0.0"
+    },
+    "created_on": "2026-02-14T14:17:42.035117",
+    "version": 1
+}

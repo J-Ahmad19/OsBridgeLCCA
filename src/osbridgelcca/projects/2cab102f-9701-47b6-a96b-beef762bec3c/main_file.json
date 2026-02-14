@@ -1,0 +1,25 @@
+{
+    "general_info": {
+        "project_id": "2cab102f-9701-47b6-a96b-beef762bec3c",
+        "project_name": "fjdasl",
+        "company_name": "jfdka",
+        "description": "fdjasd",
+        "valuer": "gjfak8392",
+        "job_number": "8392",
+        "client": "fldja",
+        "country": "India",
+        "region": "India",
+        "sor": "Bihar",
+        "base_year": "2021",
+        "currency": "INR",
+        "created_on": "2026-02-14T14:13:54.588194",
+        "modified_on": "2026-02-14T14:13:54.588194",
+        "version": 1
+    },
+    "input_param": {},
+    "Financial": {},
+    "Maintenace_repair": {},
+    "Carbon_emission": {},
+    "Bridge_and_traffic": {},
+    "Demolition_and_recycling": {}
+}

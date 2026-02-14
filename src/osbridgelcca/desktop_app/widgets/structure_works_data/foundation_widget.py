@@ -48,14 +48,19 @@ class LockEventFilter(QObject):
                 return True
         return super().eventFilter(obj, event)
 
-# --- MATERIAL INPUT POPUP (Unchanged) ---
+# --- MATERIAL INPUT POPUP (UPDATED) ---
 class MaterialInputPopup(QDialog):
     data_submitted = Signal(dict)
 
     def __init__(self, material_data_source, component_name, current_region, current_sor, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Material Details")
-        self.setFixedWidth(750) 
+        
+        # --- WINDOW SIZE OPTIMIZATION ---
+        self.setMinimumWidth(600)
+        self.resize(650, 700) # Default size
+        self.setMaximumHeight(900) # Prevent it from growing larger than most screens
+        
         self.material_data_source = material_data_source
         self.component_name = component_name
         self.current_region = current_region
@@ -75,7 +80,7 @@ class MaterialInputPopup(QDialog):
             QDialog { background-color: #ffffff; }
             QLabel { font-size: 12px; color: #333; font-family: 'Segoe UI', sans-serif; }
             QLineEdit, QComboBox {
-                border: 1px solid #cccccc; border-radius: 8px; padding: 6px 10px;
+                border: 1px solid #cccccc; border-radius: 8px; padding: 5px 8px;
                 background-color: #fcfcfc; font-size: 12px;
             }
             QLineEdit:focus, QComboBox:focus { border: 1px solid #007BFF; background-color: #ffffff; }
@@ -84,34 +89,47 @@ class MaterialInputPopup(QDialog):
             QListWidget::item:selected { background-color: #e6f3ff; color: #000; }
             QListWidget::item:hover { background-color: #f5f5f5; }
             QPushButton { border-radius: 6px; padding: 8px 16px; font-weight: bold; }
+            QScrollArea { border: none; background-color: transparent; }
         """)
 
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(25, 25, 25, 25)
-        layout.setSpacing(15)
+        # Main Layout (Vertical)
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(15, 15, 15, 15)
+        main_layout.setSpacing(10)
         
+        # 1. HEADER (Fixed at top)
         header_text_val = f"Region: {self.current_region}, Selected SOR: {self.current_sor}\nAdding in Foundation > {self.component_name} Component"
         header_text = QLabel(header_text_val)
         header_text.setStyleSheet("font-weight: bold; color: #2c3e50; font-size: 13px; margin-bottom: 5px;")
-        layout.addWidget(header_text)
+        main_layout.addWidget(header_text)
         
+        # 2. SCROLL AREA (Contains the form)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setFrameShape(QFrame.NoFrame)
+        
+        # Container Widget inside Scroll Area
+        self.scroll_content_widget = QWidget()
+        self.scroll_layout = QVBoxLayout(self.scroll_content_widget)
+        self.scroll_layout.setContentsMargins(5, 0, 10, 0) # Right margin for scrollbar
+        self.scroll_layout.setSpacing(10)
+        
+        # Form Layout
         self.form_layout = QFormLayout()
-        self.form_layout.setSpacing(12)
+        self.form_layout.setSpacing(10)
         self.form_layout.setLabelAlignment(Qt.AlignLeft)
         
-        # --- NEW: Search Source Dropdown ---
+        # --- Form Fields ---
         self.search_source_combo = QComboBox()
         self.search_source_combo.addItems(["All Sources", "Standard Database (SOR)", "User Personal Libraries"])
         self.search_source_combo.setToolTip("Choose which database to search in")
         self.search_source_combo.currentTextChanged.connect(self.on_search_source_changed)
         self.form_layout.addRow("Search Source:", self.search_source_combo)
 
-        # --- NEW: Specific Library Dropdown (Hidden by default) ---
         self.specific_lib_combo = QComboBox()
         self.specific_lib_combo.setVisible(False)
         self.specific_lib_combo.currentTextChanged.connect(lambda: self.update_search_results(self.material_input.text()))
         self.form_layout.addRow("Select Library:", self.specific_lib_combo)
-        # -----------------------------------
 
         self.material_input = QLineEdit()
         self.material_input.setPlaceholderText(f"Search {self.component_name}...")
@@ -119,6 +137,7 @@ class MaterialInputPopup(QDialog):
         self.material_input.textChanged.connect(self.on_material_text_changed)
         self.form_layout.addRow("Material Name", self.material_input)
         
+        # Suggestion List (Floating - added to self, not scroll area, to float correctly)
         self.suggestion_list = QListWidget(self)
         self.suggestion_list.setWindowFlags(Qt.SubWindow)
         self.suggestion_list.setFocusPolicy(Qt.NoFocus)
@@ -163,16 +182,12 @@ class MaterialInputPopup(QDialog):
         self.carbon_source_edit = QLineEdit()
         self.form_layout.addRow("Carbon factor source", self.carbon_source_edit)
         
-        layout.addLayout(self.form_layout)
-        
-        self.error_label = QLabel("")
-        self.error_label.setStyleSheet("color: #dc3545; font-weight: 600; font-size: 11px;")
-        self.error_label.setWordWrap(True)
-        layout.addWidget(self.error_label)
+        self.scroll_layout.addLayout(self.form_layout)
 
+        # Recyclable Section
         self.recyclable_check = QCheckBox("Recyclable")
         self.recyclable_check.toggled.connect(self.on_recyclable_toggled)
-        layout.addWidget(self.recyclable_check)
+        self.scroll_layout.addWidget(self.recyclable_check)
 
         self.recyclable_fields_widget = QWidget()
         self.recyclable_fields_layout = QFormLayout(self.recyclable_fields_widget)
@@ -191,12 +206,13 @@ class MaterialInputPopup(QDialog):
         self.recyclable_fields_layout.addRow("Percentage of Quantities (%) *", self.percentage_qty_edit)
 
         self.recyclable_fields_widget.setVisible(False)
-        layout.addWidget(self.recyclable_fields_widget)
+        self.scroll_layout.addWidget(self.recyclable_fields_widget)
         
+        # Database Selection (Footer of Scroll Area)
         self.edit_check = QCheckBox("Edit")
         self.edit_check.toggled.connect(self.on_edit_toggled)
         self.edit_check.setVisible(False) 
-        layout.addWidget(self.edit_check)
+        self.scroll_layout.addWidget(self.edit_check)
         
         self.db_selection_widget = QWidget()
         self.db_selection_layout = QHBoxLayout(self.db_selection_widget)
@@ -218,11 +234,23 @@ class MaterialInputPopup(QDialog):
         self.new_db_btn.clicked.connect(self.create_new_database)
         self.db_selection_layout.addWidget(self.new_db_btn)
 
-        self.db_selection_widget.setVisible(False) # Hidden by default
-        layout.addWidget(self.db_selection_widget)
+        self.db_selection_widget.setVisible(False) 
+        self.scroll_layout.addWidget(self.db_selection_widget)
         
-        layout.addSpacerItem(QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        # Add Spacer at bottom of scroll content to push things up
+        self.scroll_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
+        # Set Widget to Scroll Area
+        self.scroll_area.setWidget(self.scroll_content_widget)
+        main_layout.addWidget(self.scroll_area)
+        
+        # 3. ERROR LABEL (Fixed at bottom)
+        self.error_label = QLabel("")
+        self.error_label.setStyleSheet("color: #dc3545; font-weight: 600; font-size: 11px;")
+        self.error_label.setWordWrap(True)
+        main_layout.addWidget(self.error_label)
+
+        # 4. ACTION BUTTONS (Fixed at bottom)
         btn_layout = QHBoxLayout()
         btn_layout.setSpacing(10)
         
@@ -245,7 +273,7 @@ class MaterialInputPopup(QDialog):
         btn_layout.addWidget(self.cancel_btn)
         btn_layout.addWidget(self.exit_btn)
         
-        layout.addLayout(btn_layout)
+        main_layout.addLayout(btn_layout)
         
         self.on_material_text_changed(self.material_input.text())
 

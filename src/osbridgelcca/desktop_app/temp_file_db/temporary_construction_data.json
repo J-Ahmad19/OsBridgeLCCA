@@ -4,32 +4,40 @@
         "type": "Excavation",
         "data": [
             {
-                "item": 12.02,
-                "name": "All type(manual) (0 to 1.5m)",
-                "quantity": 500,
+                "name": "Soft Rock (Above 6 m)",
+                "quantity": 1,
                 "unit": "cum",
-                "rate": 239,
+                "rate": 724.1,
                 "rate_src": "Maha PWD SOR",
                 "carbon_emission": "not_available",
                 "carbon_emission_units": "not_available",
                 "conversion_factor": "not_available",
                 "carbon_emission_src": "not_available",
-                "recyclability_percentage": 30,
-                "scrap_rate": 10
+                "recycleable": "Non-recyclable"
             },
             {
-                "item": 12.02,
-                "name": "All type(manual) (1.5 to 3.0m)",
-                "quantity": 213,
+                "name": "Hard Rock (Blasting) (0 to 1.5m)",
+                "quantity": 1232,
                 "unit": "cum",
-                "rate": 262.9,
+                "rate": 1232,
                 "rate_src": "Maha PWD SOR",
                 "carbon_emission": "not_available",
                 "carbon_emission_units": "not_available",
                 "conversion_factor": "not_available",
                 "carbon_emission_src": "not_available",
-                "recyclability_percentage": null,
-                "scrap_rate": null
+                "recycleable": "Non-recyclable"
+            },
+            {
+                "name": "Hard Rock (Blasting) (1.5 to 3.0m)",
+                "quantity": 2,
+                "unit": "cum",
+                "rate": 1355.2,
+                "rate_src": "Maha PWD SOR",
+                "carbon_emission": "not_available",
+                "carbon_emission_units": "not_available",
+                "conversion_factor": "not_available",
+                "carbon_emission_src": "not_available",
+                "recycleable": "Non-recyclable"
             }
         ]
     },
@@ -38,21 +46,18 @@
         "type": "Pile",
         "data": [
             {
-                "item": 14.01,
                 "name": "Steel Rebar (Fe500)",
                 "quantity": 1,
                 "unit": "MT",
                 "rate": 88341,
                 "rate_src": "Maha PWD SOR",
                 "carbon_emission": 2.6,
-                "carbon_emission_units": "Kg",
+                "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1000,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 90,
-                "scrap_rate": 12
+                "recycleable": "Non-recyclable"
             },
             {
-                "item": 15.04,
                 "name": "Concreting of bored pile (M30) (475mm) (5 to 10m)",
                 "quantity": 2,
                 "unit": "Rmt",
@@ -62,8 +67,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 90,
-                "scrap_rate": 12
+                "recycleable": "Non-recyclable"
             }
         ]
     },
@@ -72,7 +76,6 @@
         "type": "Pile Cap",
         "data": [
             {
-                "item": 15.13,
                 "name": "Plain Cement Concrete (M15)",
                 "quantity": 1,
                 "unit": "cum",
@@ -82,11 +85,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 90,
-                "scrap_rate": 12
+                "recycleable": "Recyclable"
             },
             {
-                "item": 17.35,
                 "name": "Concreting of pile cap (M35)",
                 "quantity": 1,
                 "unit": "cum",
@@ -96,8 +97,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 80,
-                "scrap_rate": 11
+                "recycleable": "Recyclable"
             }
         ]
     },
@@ -106,7 +106,6 @@
         "type": "Pier",
         "data": [
             {
-                "item": 12.02,
                 "name": "Steel Rebar (Fe500)",
                 "quantity": 2,
                 "unit": "MT",
@@ -116,11 +115,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1000,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             },
             {
-                "item": 17.47,
                 "name": "Concreting in Pier(M20) (12.5 to 15m)",
                 "quantity": 3,
                 "unit": "cum",
@@ -130,11 +127,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             },
             {
-                "item": 17.5,
                 "name": "Concreting in Pier(M35) (12.5 to 15m)",
                 "quantity": 5,
                 "unit": "cum",
@@ -144,8 +139,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             }
         ]
     },
@@ -154,7 +148,6 @@
         "type": "Pier Cap",
         "data": [
             {
-                "item": 12.02,
                 "name": "Steel Rebar (Fe500)",
                 "quantity": 1,
                 "unit": "MT",
@@ -164,11 +157,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1000,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             },
             {
-                "item": 17.55,
                 "name": "Concreting of pier cap M35",
                 "quantity": 1,
                 "unit": "cum",
@@ -178,8 +169,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             }
         ]
     },
@@ -188,7 +178,6 @@
         "type": "Pedestal",
         "data": [
             {
-                "item": 12.02,
                 "name": "Steel Rebar (Fe500)",
                 "quantity": 1,
                 "unit": "MT",
@@ -198,11 +187,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1000,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             },
             {
-                "item": 17.61,
                 "name": "Concreting of pedestal M35",
                 "quantity": 1,
                 "unit": "cum",
@@ -212,8 +199,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             }
         ]
     },
@@ -222,7 +208,6 @@
         "type": "Bearings",
         "data": [
             {
-                "item": 13.06,
                 "name": "Sliding plate bearing with PTFE surface sliding",
                 "quantity": 2,
                 "unit": "MT",
@@ -232,11 +217,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1000,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Non-recyclable"
             },
             {
-                "item": 13.09,
                 "name": "POT- PTFE bearing",
                 "quantity": 2,
                 "unit": "MT",
@@ -246,8 +229,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1000,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Non-recyclable"
             }
         ]
     },
@@ -256,7 +238,6 @@
         "type": "Girder",
         "data": [
             {
-                "item": 14.92,
                 "name": "Concreting in PSC Girder (M40) (0 to 5m)",
                 "quantity": 5,
                 "unit": "cum",
@@ -266,11 +247,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             },
             {
-                "item": 14.6,
                 "name": "Precast Pretensioned Concrete Girder (Providing, transporting and Placing)",
                 "quantity": 1,
                 "unit": "cum",
@@ -280,8 +259,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             }
         ]
     },
@@ -290,7 +268,6 @@
         "type": "Deck Slab",
         "data": [
             {
-                "item": 12.02,
                 "name": "Steel Rebar (Fe500)",
                 "quantity": 2,
                 "unit": "MT",
@@ -300,11 +277,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1000,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             },
             {
-                "item": 14.89,
                 "name": "Concreting in RCC Deck Slab  (M35) (5 to 7.5m)",
                 "quantity": 3,
                 "unit": "cum",
@@ -314,11 +289,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             },
             {
-                "item": 14.9,
                 "name": "Concreting in PSC Deck Slab (M40) (7.5 to 10)",
                 "quantity": 1,
                 "unit": "cum",
@@ -328,8 +301,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             }
         ]
     },
@@ -338,7 +310,6 @@
         "type": "Diaphragm",
         "data": [
             {
-                "item": 12.02,
                 "name": "Steel Rebar (Fe500)",
                 "quantity": 1,
                 "unit": "MT",
@@ -348,11 +319,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1000,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             },
             {
-                "item": 14.91,
                 "name": "Concreting in RCC Diaphragm (M35) 0 to 5",
                 "quantity": 1,
                 "unit": "cum",
@@ -362,11 +331,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             },
             {
-                "item": 14.91,
                 "name": "Concreting in RCC Diaphragm (M35) 5 to 7.5",
                 "quantity": 1,
                 "unit": "cum",
@@ -376,11 +343,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 54
+                "recycleable": "Recyclable"
             },
             {
-                "item": 14.91,
                 "name": "Concreting in RCC Diaphragm (M35) 10 to 12.5",
                 "quantity": 3,
                 "unit": "cum",
@@ -390,8 +355,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2400,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 30,
-                "scrap_rate": 53
+                "recycleable": "Recyclable"
             }
         ]
     },
@@ -400,7 +364,6 @@
         "type": "Cross Bracings",
         "data": [
             {
-                "item": 23.02,
                 "name": "Steel Cross Bracing",
                 "quantity": 1,
                 "unit": "MT",
@@ -410,8 +373,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1000,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 60,
-                "scrap_rate": 22
+                "recycleable": "Recyclable"
             }
         ]
     },
@@ -420,7 +382,6 @@
         "type": "Railing  & Crash Barrier & Median",
         "data": [
             {
-                "item": 14.49,
                 "name": "RCC Railing (M20)",
                 "quantity": 2,
                 "unit": "RMT",
@@ -430,11 +391,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": "not_available",
                 "carbon_emission_src": "not_available",
-                "recyclability_percentage": null,
-                "scrap_rate": null
+                "recycleable": "Recyclable"
             },
             {
-                "item": 7.35,
                 "name": "Crash Barrier (Without Footpath) M20",
                 "quantity": 3,
                 "unit": "RMT",
@@ -444,11 +403,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 715.2,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 60,
-                "scrap_rate": 22
+                "recycleable": "Recyclable"
             },
             {
-                "item": 7.37,
                 "name": "Median M30",
                 "quantity": 1,
                 "unit": "RMT",
@@ -458,8 +415,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 609.6,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": null,
-                "scrap_rate": null
+                "recycleable": "Recyclable"
             }
         ]
     },
@@ -468,7 +424,6 @@
         "type": "Drainage",
         "data": [
             {
-                "item": 17.36,
                 "name": "PVC Pipe (110 mm)",
                 "quantity": 1,
                 "unit": "Rmt",
@@ -478,11 +433,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1.1,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 60,
-                "scrap_rate": 22
+                "recycleable": "Non-recyclable"
             },
             {
-                "item": 14.41,
                 "name": "Drainage Spouts (GI Pipe-100 mm)",
                 "quantity": 2,
                 "unit": "Rmt",
@@ -492,8 +445,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": "not_available",
                 "carbon_emission_src": "not_available",
-                "recyclability_percentage": 60,
-                "scrap_rate": 22
+                "recycleable": "Recyclable"
             }
         ]
     },
@@ -502,7 +454,6 @@
         "type": "Asphalt, Utilities and Other Materials",
         "data": [
             {
-                "item": "14.55.a",
                 "name": "Asphalt wearing course (12mm)",
                 "quantity": 1,
                 "unit": "m2",
@@ -512,11 +463,9 @@
                 "carbon_emission_units": "kg/m2- mm",
                 "conversion_factor": 12,
                 "carbon_emission_src": "ICE",
-                "recyclability_percentage": 60,
-                "scrap_rate": 22
+                "recycleable": "Non-recyclable"
             },
             {
-                "item": "6.12 a",
                 "name": "Yellow and white thermoplastic roadmarking strip (2.5 mm)",
                 "quantity": 3,
                 "unit": "m2",
@@ -526,11 +475,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2.75,
                 "carbon_emission_src": "ICE",
-                "recyclability_percentage": 60,
-                "scrap_rate": 22
+                "recycleable": "Non-recyclable"
             },
             {
-                "item": 26.36,
                 "name": "Anti corrosive paint for reinforcement (CPCC)",
                 "quantity": 2,
                 "unit": "MT",
@@ -540,11 +487,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 1000,
                 "carbon_emission_src": "ICE",
-                "recyclability_percentage": 60,
-                "scrap_rate": 22
+                "recycleable": "Non-recyclable"
             },
             {
-                "item": 14.68,
                 "name": "Strip Seal Expansion Joint (Catering to maximum horizontal movement upto 70mm)",
                 "quantity": 2,
                 "unit": "Rmt",
@@ -554,8 +499,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": "not_available",
                 "carbon_emission_src": "not_available",
-                "recyclability_percentage": 60,
-                "scrap_rate": 22
+                "recycleable": "Non-recyclable"
             }
         ]
     },
@@ -564,7 +508,6 @@
         "type": "Waterproofing",
         "data": [
             {
-                "item": 31.01,
                 "name": "Damp Proof course (M20) 50 mm",
                 "quantity": 1,
                 "unit": "m2",
@@ -574,11 +517,9 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 120,
                 "carbon_emission_src": "ICE",
-                "recyclability_percentage": 60,
-                "scrap_rate": 22
+                "recycleable": "Recyclable"
             },
             {
-                "item": 31.02,
                 "name": "Bitumen VG30/VG40 2kg/m2",
                 "quantity": 1,
                 "unit": "m2",
@@ -588,8 +529,7 @@
                 "carbon_emission_units": "kgCO₂e/kg",
                 "conversion_factor": 2,
                 "carbon_emission_src": "IFC",
-                "recyclability_percentage": 60,
-                "scrap_rate": 22
+                "recycleable": "Recyclable"
             }
         ]
     }

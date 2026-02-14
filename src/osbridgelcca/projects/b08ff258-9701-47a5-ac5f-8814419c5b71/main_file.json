@@ -1,0 +1,25 @@
+{
+    "general_info": {
+        "project_id": "b08ff258-9701-47a5-ac5f-8814419c5b71",
+        "project_name": "FJDJA",
+        "company_name": "FDSAL",
+        "description": "FDKLA",
+        "valuer": "FJDKLA",
+        "job_number": "302",
+        "client": "FJDA",
+        "country": "India",
+        "region": "USA",
+        "sor": "ABC",
+        "base_year": "2024",
+        "currency": "INR",
+        "created_on": "2026-02-14T14:35:04.559002",
+        "modified_on": "2026-02-14T14:35:04.559002",
+        "version": 1
+    },
+    "input_param": {},
+    "Financial": {},
+    "Maintenace_repair": {},
+    "Carbon_emission": {},
+    "Bridge_and_traffic": {},
+    "Demolition_and_recycling": {}
+}

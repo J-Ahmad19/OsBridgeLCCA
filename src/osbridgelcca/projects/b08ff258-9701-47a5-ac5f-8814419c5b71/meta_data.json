@@ -1,0 +1,13 @@
+{
+    "id": "b08ff258-9701-47a5-ac5f-8814419c5b71",
+    "name": "FJDJA",
+    "status": "draft",
+    "user_name": "root",
+    "sys_info": {
+        "os": "Darwin",
+        "architecture": "arm64",
+        "app_version": "1.0.0"
+    },
+    "created_on": "2026-02-14T14:35:04.559002",
+    "version": 1
+}

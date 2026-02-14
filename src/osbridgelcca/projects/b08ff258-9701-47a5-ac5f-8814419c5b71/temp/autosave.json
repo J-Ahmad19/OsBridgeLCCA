@@ -1,0 +1,1452 @@
+{
+    "general_info": {
+        "project_id": "b08ff258-9701-47a5-ac5f-8814419c5b71",
+        "project_name": "FJDJA",
+        "company_name": "FDSAL",
+        "description": "FDKLA",
+        "valuer": "FJDKLA",
+        "job_number": "302",
+        "client": "FJDA",
+        "country": "India",
+        "region": "USA",
+        "sor": "ABC",
+        "base_year": "2024",
+        "currency": "INR",
+        "created_on": "2026-02-14T14:35:04.559002",
+        "modified_on": "2026-02-14T14:35:04.559002",
+        "version": 1
+    },
+    "input_param": {
+        "construction_work_data": {
+            "foundation": {
+                "items": [
+                    {
+                        "id": "7ee86b9b-8ad8-4509-a3a9-0788c07c39af",
+                        "values": {
+                            "material_name": "Soft Rock (Above 6 m)",
+                            "quantity": 1,
+                            "unit": "cum",
+                            "rate": 724.1,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": "not_available",
+                            "carbon_unit": "not_available",
+                            "conversion_factor": "not_available",
+                            "carbon_source": "not_available",
+                            "grade": "Standard",
+                            "type": "Soft Rock (Above 6 m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669085",
+                            "modified_on": "2026-02-14T14:35:16.669085",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "4b7d91e6-2aba-435f-94c5-caa6640688b6",
+                        "values": {
+                            "material_name": "Hard Rock (Blasting) (0 to 1.5m)",
+                            "quantity": 1232,
+                            "unit": "cum",
+                            "rate": 1232,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": "not_available",
+                            "carbon_unit": "not_available",
+                            "conversion_factor": "not_available",
+                            "carbon_source": "not_available",
+                            "grade": "Standard",
+                            "type": "Hard Rock (Blasting) (0 to 1.5m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669111",
+                            "modified_on": "2026-02-14T14:35:16.669111",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "23ac1264-3953-4709-ae12-37b5811736aa",
+                        "values": {
+                            "material_name": "Hard Rock (Blasting) (1.5 to 3.0m)",
+                            "quantity": 2,
+                            "unit": "cum",
+                            "rate": 1355.2,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": "not_available",
+                            "carbon_unit": "not_available",
+                            "conversion_factor": "not_available",
+                            "carbon_source": "not_available",
+                            "grade": "Standard",
+                            "type": "Hard Rock (Blasting) (1.5 to 3.0m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669118",
+                            "modified_on": "2026-02-14T14:35:16.669118",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "6d721a8b-68b7-426b-aa86-873fe28f32d9",
+                        "values": {
+                            "material_name": "Steel Rebar (Fe500)",
+                            "quantity": 1,
+                            "unit": "MT",
+                            "rate": 88341,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.6,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1000,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Steel Rebar (Fe500)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669127",
+                            "modified_on": "2026-02-14T14:35:16.669127",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "4cec42a2-e1c7-4082-a92e-ecb136f93845",
+                        "values": {
+                            "material_name": "Concreting of bored pile (M30) (475mm) (5 to 10m)",
+                            "quantity": 2,
+                            "unit": "Rmt",
+                            "rate": 3978,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting of bored pile (M30) (475mm) (5 to 10m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669133",
+                            "modified_on": "2026-02-14T14:35:16.669133",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "32b28d13-8cd6-4064-ac07-f6b7afa947ce",
+                        "values": {
+                            "material_name": "Plain Cement Concrete (M15)",
+                            "quantity": 1,
+                            "unit": "cum",
+                            "rate": 5216,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Plain Cement Concrete (M15)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669141",
+                            "modified_on": "2026-02-14T14:35:16.669141",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "4cb43068-e75f-4b3a-9ef1-2e97a4a7f99e",
+                        "values": {
+                            "material_name": "Concreting of pile cap (M35)",
+                            "quantity": 1,
+                            "unit": "cum",
+                            "rate": 6529,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting of pile cap (M35)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669146",
+                            "modified_on": "2026-02-14T14:35:16.669146",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "aac18754-c13d-47f7-a4b5-75ceee30f917",
+                        "values": {
+                            "material_name": "Soft Rock (Above 6 m)",
+                            "quantity": "1.0",
+                            "unit": "cum",
+                            "rate": "724.1",
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": "not_available",
+                            "carbon_unit": "not_available",
+                            "conversion_factor": "not_available",
+                            "carbon_source": "not_available",
+                            "grade": "Standard",
+                            "type": "Soft Rock (Above 6 m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:19.841195",
+                            "modified_on": "2026-02-14T14:35:19.841195",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "88db7b48-9d93-4290-89b7-11a2eef9430f",
+                        "values": {
+                            "material_name": "Hard Rock (Blasting) (0 to 1.5m)",
+                            "quantity": "1232.0",
+                            "unit": "cum",
+                            "rate": "1232.0",
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": "not_available",
+                            "carbon_unit": "not_available",
+                            "conversion_factor": "not_available",
+                            "carbon_source": "not_available",
+                            "grade": "Standard",
+                            "type": "Hard Rock (Blasting) (0 to 1.5m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:19.847200",
+                            "modified_on": "2026-02-14T14:35:19.847200",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "e4298125-55ff-4e7d-91dd-d72fd382c7b2",
+                        "values": {
+                            "material_name": "Hard Rock (Blasting) (1.5 to 3.0m)",
+                            "quantity": "2.0",
+                            "unit": "cum",
+                            "rate": "1355.2",
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": "not_available",
+                            "carbon_unit": "not_available",
+                            "conversion_factor": "not_available",
+                            "carbon_source": "not_available",
+                            "grade": "Standard",
+                            "type": "Hard Rock (Blasting) (1.5 to 3.0m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:19.851293",
+                            "modified_on": "2026-02-14T14:35:19.851293",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "97b5a8cb-cae9-42c5-8dc8-988e7ec71805",
+                        "values": {
+                            "material_name": "Steel Rebar (Fe500)",
+                            "quantity": "1.0",
+                            "unit": "mt",
+                            "rate": "88341.0",
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": "2.6",
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": "1000",
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Steel Rebar (Fe500)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:19.856729",
+                            "modified_on": "2026-02-14T14:35:19.856729",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "aa75258b-6177-4a4e-bd16-8efe2f4c1328",
+                        "values": {
+                            "material_name": "Concreting of bored pile (M30) (475mm) (5 to 10m)",
+                            "quantity": "2.0",
+                            "unit": "rmt",
+                            "rate": "3978.0",
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": "0.11",
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": "2400",
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting of bored pile (M30) (475mm) (5 to 10m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:19.861484",
+                            "modified_on": "2026-02-14T14:35:19.861484",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "560cd791-8023-4272-8ce8-6112c650d8ff",
+                        "values": {
+                            "material_name": "Plain Cement Concrete (M15)",
+                            "quantity": "1.0",
+                            "unit": "cum",
+                            "rate": "5216.0",
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": "0.11",
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": "2400",
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Plain Cement Concrete (M15)",
+                            "is_recyclable": true,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:19.866510",
+                            "modified_on": "2026-02-14T14:35:19.866510",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": true
+                        }
+                    },
+                    {
+                        "id": "e22dc7c5-173d-47ae-a251-8bde1755c37c",
+                        "values": {
+                            "material_name": "Concreting of pile cap (M35)",
+                            "quantity": "1.0",
+                            "unit": "cum",
+                            "rate": "6529.0",
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": "0.11",
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": "2400",
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting of pile cap (M35)",
+                            "is_recyclable": true,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:19.885917",
+                            "modified_on": "2026-02-14T14:35:19.885917",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": true
+                        }
+                    }
+                ]
+            },
+            "sub_structure": {
+                "items": [
+                    {
+                        "id": "5d71aa7d-2b7d-463f-817d-8f63619f6865",
+                        "values": {
+                            "material_name": "Steel Rebar (Fe500)",
+                            "quantity": 2,
+                            "unit": "MT",
+                            "rate": 88341,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.6,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1000,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Steel Rebar (Fe500)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669155",
+                            "modified_on": "2026-02-14T14:35:16.669155",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "30282fcf-f290-47fb-86e0-23a531eea1e7",
+                        "values": {
+                            "material_name": "Concreting in Pier(M20) (12.5 to 15m)",
+                            "quantity": 3,
+                            "unit": "cum",
+                            "rate": 9705.6,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting in Pier(M20) (12.5 to 15m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669160",
+                            "modified_on": "2026-02-14T14:35:16.669160",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "7b724305-2b5d-4b61-bce2-59f5baedde9b",
+                        "values": {
+                            "material_name": "Concreting in Pier(M35) (12.5 to 15m)",
+                            "quantity": 5,
+                            "unit": "cum",
+                            "rate": 10624.8,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting in Pier(M35) (12.5 to 15m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669165",
+                            "modified_on": "2026-02-14T14:35:16.669165",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "d851aeba-24e9-4745-abc1-cd8b5e0a5db4",
+                        "values": {
+                            "material_name": "Steel Rebar (Fe500)",
+                            "quantity": 1,
+                            "unit": "MT",
+                            "rate": 88341,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1000,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Steel Rebar (Fe500)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669170",
+                            "modified_on": "2026-02-14T14:35:16.669170",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "3ff8cc20-5244-4d2f-8898-c89abdead095",
+                        "values": {
+                            "material_name": "Concreting of pier cap M35",
+                            "quantity": 1,
+                            "unit": "cum",
+                            "rate": 9574,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.6,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting of pier cap M35",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669174",
+                            "modified_on": "2026-02-14T14:35:16.669174",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "54679cc2-56f2-436f-83ec-fbd3b9c7afec",
+                        "values": {
+                            "material_name": "Steel Rebar (Fe500)",
+                            "quantity": 1,
+                            "unit": "MT",
+                            "rate": 88341,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1000,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Steel Rebar (Fe500)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669178",
+                            "modified_on": "2026-02-14T14:35:16.669178",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "a9dcada2-d84b-4d51-beb5-18222ac09efb",
+                        "values": {
+                            "material_name": "Concreting of pedestal M35",
+                            "quantity": 1,
+                            "unit": "cum",
+                            "rate": 7853,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.6,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting of pedestal M35",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669182",
+                            "modified_on": "2026-02-14T14:35:16.669182",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "1db96b06-2642-413a-9455-6ad38493caf4",
+                        "values": {
+                            "material_name": "Sliding plate bearing with PTFE surface sliding",
+                            "quantity": 2,
+                            "unit": "MT",
+                            "rate": 303,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.5,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1000,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Sliding plate bearing with PTFE surface sliding",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669186",
+                            "modified_on": "2026-02-14T14:35:16.669186",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "fff6a24b-c4ae-423c-aff7-750a53798028",
+                        "values": {
+                            "material_name": "POT- PTFE bearing",
+                            "quantity": 2,
+                            "unit": "MT",
+                            "rate": 214,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.5,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1000,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "POT- PTFE bearing",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669189",
+                            "modified_on": "2026-02-14T14:35:16.669189",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    }
+                ]
+            },
+            "super_structure": {
+                "items": [
+                    {
+                        "id": "8518caa5-c729-4818-b224-098c32186b9f",
+                        "values": {
+                            "material_name": "Concreting in PSC Girder (M40) (0 to 5m)",
+                            "quantity": 5,
+                            "unit": "cum",
+                            "rate": 12335,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting in PSC Girder (M40) (0 to 5m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669194",
+                            "modified_on": "2026-02-14T14:35:16.669194",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "20f60293-0748-47d7-9104-336ab927af72",
+                        "values": {
+                            "material_name": "Precast Pretensioned Concrete Girder (Providing, transporting and Placing)",
+                            "quantity": 1,
+                            "unit": "cum",
+                            "rate": 28781,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Precast Pretensioned Concrete Girder (Providing, transporting and Placing)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669198",
+                            "modified_on": "2026-02-14T14:35:16.669198",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "3ade1342-5b9f-4ab8-897a-296b72da8733",
+                        "values": {
+                            "material_name": "Steel Rebar (Fe500)",
+                            "quantity": 2,
+                            "unit": "MT",
+                            "rate": 88341,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.6,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1000,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Steel Rebar (Fe500)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669202",
+                            "modified_on": "2026-02-14T14:35:16.669202",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "5d4b5681-8e4b-4458-90f6-ddee1a291daf",
+                        "values": {
+                            "material_name": "Concreting in RCC Deck Slab  (M35) (5 to 7.5m)",
+                            "quantity": 3,
+                            "unit": "cum",
+                            "rate": 12287.1,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting in RCC Deck Slab  (M35) (5 to 7.5m)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669205",
+                            "modified_on": "2026-02-14T14:35:16.669205",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "37a919ba-b2c8-4a7f-a528-16ddd06ab2c0",
+                        "values": {
+                            "material_name": "Concreting in PSC Deck Slab (M40) (7.5 to 10)",
+                            "quantity": 1,
+                            "unit": "cum",
+                            "rate": 12808.625,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting in PSC Deck Slab (M40) (7.5 to 10)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669209",
+                            "modified_on": "2026-02-14T14:35:16.669209",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "b28fdf8a-5055-4ef5-a28e-539c4b4ca937",
+                        "values": {
+                            "material_name": "Steel Rebar (Fe500)",
+                            "quantity": 1,
+                            "unit": "MT",
+                            "rate": 88341,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1000,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Steel Rebar (Fe500)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669213",
+                            "modified_on": "2026-02-14T14:35:16.669213",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "a203d814-9109-4075-9a49-f67386572a52",
+                        "values": {
+                            "material_name": "Concreting in RCC Diaphragm (M35) 0 to 5",
+                            "quantity": 1,
+                            "unit": "cum",
+                            "rate": 12114,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting in RCC Diaphragm (M35) 0 to 5",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669217",
+                            "modified_on": "2026-02-14T14:35:16.669217",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "9d864e30-d410-4c24-ae70-6428fb17819a",
+                        "values": {
+                            "material_name": "Concreting in RCC Diaphragm (M35) 5 to 7.5",
+                            "quantity": 1,
+                            "unit": "cum",
+                            "rate": 12719.7,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting in RCC Diaphragm (M35) 5 to 7.5",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669220",
+                            "modified_on": "2026-02-14T14:35:16.669220",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "c97fa7ee-0eab-4ca0-85d9-67f7c47f4a97",
+                        "values": {
+                            "material_name": "Concreting in RCC Diaphragm (M35) 10 to 12.5",
+                            "quantity": 3,
+                            "unit": "cum",
+                            "rate": 13325.400000000001,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2400,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Concreting in RCC Diaphragm (M35) 10 to 12.5",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669224",
+                            "modified_on": "2026-02-14T14:35:16.669224",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "e9fb5bb1-4e5b-48ee-b66a-25735f01cfca",
+                        "values": {
+                            "material_name": "Steel Cross Bracing",
+                            "quantity": 1,
+                            "unit": "MT",
+                            "rate": 97759,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.5,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1000,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Steel Cross Bracing",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669228",
+                            "modified_on": "2026-02-14T14:35:16.669228",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    }
+                ]
+            },
+            "other": {
+                "items": [
+                    {
+                        "id": "a947f1cb-c90f-4861-b639-9a7dc7aca25d",
+                        "values": {
+                            "material_name": "RCC Railing (M20)",
+                            "quantity": 2,
+                            "unit": "RMT",
+                            "rate": 2499,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": "not_available",
+                            "carbon_source": "not_available",
+                            "grade": "Standard",
+                            "type": "RCC Railing (M20)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669233",
+                            "modified_on": "2026-02-14T14:35:16.669233",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "d125194f-f325-48c1-860c-546a4bd6a6a8",
+                        "values": {
+                            "material_name": "Crash Barrier (Without Footpath) M20",
+                            "quantity": 3,
+                            "unit": "RMT",
+                            "rate": 4058,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 715.2,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Crash Barrier (Without Footpath) M20",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669237",
+                            "modified_on": "2026-02-14T14:35:16.669237",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "638d16b1-a596-472f-811d-a1abc9aca3f5",
+                        "values": {
+                            "material_name": "Median M30",
+                            "quantity": 1,
+                            "unit": "RMT",
+                            "rate": 4234,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 609.6,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Median M30",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669240",
+                            "modified_on": "2026-02-14T14:35:16.669240",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "a2fad903-ebb5-440f-8b47-f35e56e972b1",
+                        "values": {
+                            "material_name": "PVC Pipe (110 mm)",
+                            "quantity": 1,
+                            "unit": "Rmt",
+                            "rate": 479,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 3.23,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1.1,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "PVC Pipe (110 mm)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669244",
+                            "modified_on": "2026-02-14T14:35:16.669244",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "fb3ccf4b-2c52-452e-b2e8-3fb396e966f7",
+                        "values": {
+                            "material_name": "Drainage Spouts (GI Pipe-100 mm)",
+                            "quantity": 2,
+                            "unit": "Rmt",
+                            "rate": 704,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.8,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": "not_available",
+                            "carbon_source": "not_available",
+                            "grade": "Standard",
+                            "type": "Drainage Spouts (GI Pipe-100 mm)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669248",
+                            "modified_on": "2026-02-14T14:35:16.669248",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "9f1ff502-c3d5-46be-b3e8-6cdad1159973",
+                        "values": {
+                            "material_name": "Asphalt wearing course (12mm)",
+                            "quantity": 1,
+                            "unit": "m2",
+                            "rate": 496,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.162,
+                            "carbon_unit": "kg/m2- mm",
+                            "conversion_factor": 12,
+                            "carbon_source": "ICE",
+                            "grade": "Standard",
+                            "type": "Asphalt wearing course (12mm)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669252",
+                            "modified_on": "2026-02-14T14:35:16.669252",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "eb8cf052-100a-4b07-9f24-b8f472a6aeef",
+                        "values": {
+                            "material_name": "Yellow and white thermoplastic roadmarking strip (2.5 mm)",
+                            "quantity": 3,
+                            "unit": "m2",
+                            "rate": 666,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.152,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2.75,
+                            "carbon_source": "ICE",
+                            "grade": "Standard",
+                            "type": "Yellow and white thermoplastic roadmarking strip (2.5 mm)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669256",
+                            "modified_on": "2026-02-14T14:35:16.669256",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "1e38b15d-fe34-40fe-a882-63f663dca59d",
+                        "values": {
+                            "material_name": "Anti corrosive paint for reinforcement (CPCC)",
+                            "quantity": 2,
+                            "unit": "MT",
+                            "rate": 11287,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 3.76,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 1000,
+                            "carbon_source": "ICE",
+                            "grade": "Standard",
+                            "type": "Anti corrosive paint for reinforcement (CPCC)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669259",
+                            "modified_on": "2026-02-14T14:35:16.669259",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "ed6c048e-cc45-4621-b6db-e5d1458e9fd9",
+                        "values": {
+                            "material_name": "Strip Seal Expansion Joint (Catering to maximum horizontal movement upto 70mm)",
+                            "quantity": 2,
+                            "unit": "Rmt",
+                            "rate": 13295,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 2.547,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": "not_available",
+                            "carbon_source": "not_available",
+                            "grade": "Standard",
+                            "type": "Strip Seal Expansion Joint (Catering to maximum horizontal movement upto 70mm)",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669263",
+                            "modified_on": "2026-02-14T14:35:16.669263",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "6d1aa870-4419-4f76-8bdb-069979311371",
+                        "values": {
+                            "material_name": "Damp Proof course (M20) 50 mm",
+                            "quantity": 1,
+                            "unit": "m2",
+                            "rate": 432,
+                            "rate_source": null,
+                            "carbon_emission": 0.11,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 120,
+                            "carbon_source": "ICE",
+                            "grade": "Standard",
+                            "type": "Damp Proof course (M20) 50 mm",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669267",
+                            "modified_on": "2026-02-14T14:35:16.669267",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    },
+                    {
+                        "id": "b5027e3a-da40-4650-8973-8af091ab6e72",
+                        "values": {
+                            "material_name": "Bitumen VG30/VG40 2kg/m2",
+                            "quantity": 1,
+                            "unit": "m2",
+                            "rate": 246,
+                            "rate_source": "Maha PWD SOR",
+                            "carbon_emission": 0.222,
+                            "carbon_unit": "kgCO\u2082e/kg",
+                            "conversion_factor": 2,
+                            "carbon_source": "IFC",
+                            "grade": "Standard",
+                            "type": "Bitumen VG30/VG40 2kg/m2",
+                            "is_recyclable": false,
+                            "scrap_rate": 5,
+                            "recyclability_percentage": 80
+                        },
+                        "meta": {
+                            "created_on": "2026-02-14T14:35:16.669271",
+                            "modified_on": "2026-02-14T14:35:16.669271",
+                            "is_user_defined": true,
+                            "is_from_db": false,
+                            "source_version": "v1.0"
+                        },
+                        "state": {
+                            "is_active": true,
+                            "removed_by_user": false,
+                            "included_in_carbon_emission": true,
+                            "included_in_recyclability": false
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "Financial": {},
+    "Maintenace_repair": {},
+    "Carbon_emission": {},
+    "Bridge_and_traffic": {},
+    "Demolition_and_recycling": {}
+}

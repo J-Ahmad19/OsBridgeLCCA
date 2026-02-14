@@ -1,0 +1,25 @@
+{
+    "general_info": {
+        "project_id": "5c0e646d-3a3f-4cd8-8ff0-f54ccd894c25",
+        "project_name": "EJW",
+        "company_name": "FJDSL",
+        "description": "EJW",
+        "valuer": "GJKR",
+        "job_number": "32",
+        "client": "fks",
+        "country": "India",
+        "region": "India",
+        "sor": "Bihar",
+        "base_year": "2020",
+        "currency": "INR",
+        "created_on": "2026-02-14T14:43:15.852534",
+        "modified_on": "2026-02-14T14:43:15.852534",
+        "version": 1
+    },
+    "input_param": {},
+    "Financial": {},
+    "Maintenace_repair": {},
+    "Carbon_emission": {},
+    "Bridge_and_traffic": {},
+    "Demolition_and_recycling": {}
+}

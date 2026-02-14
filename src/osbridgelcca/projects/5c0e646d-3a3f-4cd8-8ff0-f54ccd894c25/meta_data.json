@@ -1,0 +1,13 @@
+{
+    "id": "5c0e646d-3a3f-4cd8-8ff0-f54ccd894c25",
+    "name": "EJW",
+    "status": "draft",
+    "user_name": "root",
+    "sys_info": {
+        "os": "Darwin",
+        "architecture": "arm64",
+        "app_version": "1.0.0"
+    },
+    "created_on": "2026-02-14T14:43:15.852534",
+    "version": 1
+}

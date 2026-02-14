@@ -147,7 +147,8 @@ class LifecycleManager:
         temp_path_tmp = temp_path + ".tmp"
         try:
             with open(temp_path_tmp, 'w') as f:
-                json.dump(data_dict, f, indent=4)
+                # IMPLEMENTED FIX: ensure_ascii=False preserves characters like '₂'
+                json.dump(data_dict, f, indent=4, ensure_ascii=False)
             
             # Rename tmp to actual only after successful write
             os.replace(temp_path_tmp, temp_path)
