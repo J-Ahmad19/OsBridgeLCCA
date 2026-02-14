@@ -118,7 +118,8 @@ class LifecycleManager:
         conn.close()
 
         # Load content
-        with open(temp_path, 'r') as f:
+        # UPDATED: Added encoding='utf-8' to prevent read errors
+        with open(temp_path, 'r', encoding='utf-8') as f:
             return json.load(f)
 
     # =========================================================
@@ -146,8 +147,8 @@ class LifecycleManager:
         # 2. Atomic Write (Prevents corruption if app crashes while writing)
         temp_path_tmp = temp_path + ".tmp"
         try:
-            with open(temp_path_tmp, 'w') as f:
-                # IMPLEMENTED FIX: ensure_ascii=False preserves characters like '₂'
+            # UPDATED: Added encoding='utf-8' to fix 'charmap' codec error
+            with open(temp_path_tmp, 'w', encoding='utf-8') as f:
                 json.dump(data_dict, f, indent=4, ensure_ascii=False)
             
             # Rename tmp to actual only after successful write
