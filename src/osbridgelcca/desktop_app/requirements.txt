@@ -1,0 +1,26 @@
+# --- Desktop GUI ---
+PySide6>=6.0.0
+
+# --- Data & Configuration ---
+pandas>=2.0.0,<3.0.0
+numpy
+PyYAML
+openpyxl  # Required for reading/writing .xlsx files
+
+# --- Backend & Web ---
+Django>=4.0.0
+djangorestframework
+django-cors-headers
+
+# Visualization 
+plotly
+matplotlib
+
+# Reporting
+PyLaTeX
+
+# --- Utilities & Dependencies ---
+pytest
+requests
+python-dateutil
+six
